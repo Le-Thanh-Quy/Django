@@ -7,7 +7,7 @@
 
 ### Mô tả:
 - Một trang web cho phép tìm kiếm, xem thông tin các loại máy ảnh và đặt mua máy ảnh
--  
+
 ### Chức năng chính: 
 - Đăng nhập/ Đăng ký
 - Tìm kiếm máy ảnh
