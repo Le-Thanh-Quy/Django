@@ -17,4 +17,10 @@
 - Quản lý trang cá nhân 
 - Admin: Thêm sử xóa máy ảnh(các thông tin thêm về máy ảnh)
 
+### Công nghệ:
+
+- Django
+- HTML/CSS/JS
+- Database: SQLite
+
 ### Thời gian hoàn thành dự kiến: 20/06/2022
