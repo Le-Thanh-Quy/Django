@@ -3,8 +3,8 @@ from django.db import models
 from django.utils.html import mark_safe
 from django.templatetags.static import static
 
-
 # Create your models here.
+
 
 class Company(models.Model):
     companyName = models.CharField(max_length=100)
@@ -14,7 +14,7 @@ class Company(models.Model):
 
 
 class Image(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=True)
     productFrontImage = models.ImageField(upload_to='CameraShop/static/CameraShop/img/save')
     productBackImage = models.ImageField(upload_to='CameraShop/static/CameraShop/img/save')
     photo1 = models.ImageField(upload_to='CameraShop/static/CameraShop/img/save')
@@ -127,15 +127,15 @@ class Camera(models.Model):
 
 
 class FocalLength(models.Model):
-    fromLength = models.IntegerField()
-    toLength = models.IntegerField()
+    focalLength = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.fromLength.__str__() + "-" + self.toLength.__str__()
+        return self.focalLength
 
 
 class Lens(models.Model):
     name = models.CharField(max_length=100)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, null=True)
     focalLength = models.ForeignKey(FocalLength, on_delete=models.CASCADE)
     aperture = models.ForeignKey(Aperture, on_delete=models.CASCADE)
     lensMount = models.ForeignKey(LensMount, on_delete=models.CASCADE)
