@@ -1,90 +1,559 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
+    <!-- Basic -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Site Metas -->
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="{% static 'CameraShop/img/home/camera.png' %}" type="image/x-icon">
+
+    <title>QTH</title>
+
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/bootstrap.css' %}">
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+
+    <!-- font awesome style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/font-awesome.min.css' %}">
+
+    <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/style.css' %}">
-    <script src="{% static 'CameraShop/js/script.js' %}"></script>
+    <!-- responsive style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/responsive.css' %}">
+
 </head>
 
 <body>
-{#{% if a and list_random %}#}
-{#    {% for foo in list_random %}#}
-{#        <h1 class="main_body">{{ a }}__{{ foo }}</h1>#}
-{#    {% endfor %}#}
-{#{% endif %}#}
-<div class="header">
-    <div class="menu">
-        <p>QTH</p>
-        <div class="menu-item">
-            <img src="{% static 'CameraShop/img/home/camera.png' %}">
+
+<div class="hero_area">
+    <div class="hero_social">
+        <a href="">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="">
+            <i class="fa fa-linkedin" aria-hidden="true"></i>
+        </a>
+        <a href="">
+            <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+    </div>
+    <!-- header section strats -->
+    <header class="header_section">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand" href="index.html">
+            <span>
+              QTH
+            </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class=""> </span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="watches.html">Camera</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">Lens</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact Us</a>
+                        </li>
+                    </ul>
+                    <div class="user_option-box">
+                        <a href="">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <div class="menu-item">
-            <img src="{% static 'CameraShop/img/home/camera-lens.png' %}">
-        </div>
-        <div class="menu-item">
-            <img src="{% static 'CameraShop/img/home/sale.png' %}">
-        </div>
-        <div class="menu-item">
-            <img src="{% static 'CameraShop/img/home/news.png' %}">
-        </div>
-        <div class="menu-item">
-            <div class="menu-item-img">
-                <img src="{% static 'CameraShop/img/home/search.png' %}">
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section ">
+        <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% if list_camera %}
+                    {% for camera in list_camera %}
+                        {% if forloop.counter0 < 10 %}
+                            <div class="carousel-item
+                        {% if forloop.counter0 == 0 %}
+                        active
+                        {% endif %}
+                        ">
+                                <div class="container-fluid ">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="detail-box">
+                                                <h1>
+                                                    {{ camera.name }}
+                                                </h1>
+                                                <p>
+                                                    {{ camera.description }}
+                                                </p>
+                                                <div class="btn-box">
+                                                    <a href="" class="btn1">
+                                                        View detail
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="img-box">
+                                                <img src="{{ camera.image.productFrontImage.url }}"
+                                                     alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
-            <div class="menu-item-img">
-                <img src="{% static 'CameraShop/img/home/user.png' %}">
+            <ol class="carousel-indicators">
+                {% if  list_camera %}
+                    {% for foo in list_camera %}
+                        {% if forloop.counter0 < 10 %}
+                            {% if forloop.counter0 == 0 %}
+                                <li data-target="#customCarousel1" data-slide-to="{{ forloop.counter0 }}"
+                                    class="active"></li>
+                            {% else %}
+                                <li data-target="#customCarousel1" data-slide-to="{{ forloop.counter0 }}"></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </ol>
+        </div>
+    </section>
+</div>
+<!-- end slider section -->
+
+<!-- shop camera section -->
+
+<section class="shop_section layout_padding_camera ">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Camera
+            </h2>
+        </div>
+        <div class="row">
+            {% if list_camera %}
+                {% for camera in list_camera %}
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="box">
+                            <a href="">
+                                <div class="img-box">
+                                    <img src="{{ camera.image.productFrontImage.url }}"
+                                         onmouseover="this.src='{{ camera.image.productBackImage.url }}';"
+                                         onmouseout="this.src='{{ camera.image.productFrontImage.url }}';"
+                                         alt="">
+                                </div>
+                                <div class="detail-box">
+                                    <h6 class="detail-box-h6">
+                                        {{ camera.name }}
+                                    </h6>
+                                    <h6>
+                                        Price:
+                                        <span>
+                                            {{ camera.getPrice }} <span class="detail-box-money">đ</span>
+                                        </span>
+                                    </h6>
+                                </div>
+                                {% if forloop.counter0 < 10 %}
+                                    <div class="new">
+                                        <span>
+                                            New
+                                        </span>
+                                    </div>
+                                {% else %}
+                                    <div class="stocking">
+                                        <span>
+                                            Stocking
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        </div>
+    </div>
+</section>
+
+<!-- end shop camera section -->
+<!-- start shop lens section -->
+
+<section class="shop_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Lens
+            </h2>
+        </div>
+        <div class="row">
+            {% if list_len %}
+                {% for len in list_len %}
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="box">
+                            <a href="">
+                                <div class="img-box">
+                                    <img src="{{ len.image.productFrontImage.url }}" alt="">
+                                </div>
+                                <div class="detail-box">
+                                    <h6>
+                                        Smartwatch
+                                    </h6>
+                                    <h6>
+                                        Price:
+                                        <span>
+                    $125
+                  </span>
+                                    </h6>
+                                </div>
+                                <div class="new">
+                <span>
+                  New
+                </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- end shop lens section -->
+
+<!-- about section -->
+
+<section class="about_section layout_padding">
+    <div class="container  ">
+        <div class="row">
+            <div class="col-md-6 col-lg-5 ">
+                <div class="img-box">
+                    <img src="{% static 'CameraShop/img/camera/camera2.png' %}" alt="">
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-7">
+                <div class="detail-box">
+                    <div class="heading_container">
+                        <h2>
+                            About Us
+                        </h2>
+                    </div>
+                    <p>
+                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered
+                        alteration
+                        in some form, by injected humour, or randomised words which don't look even slightly believable.
+                        If you
+                        are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing
+                        hidden in
+                        the middle of text. All
+                    </p>
+                    <a href="">
+                        Read More
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="slider">
-    <div class="title">
-        <div class="title-item-empty">
-        </div>
-        <div class="title-item">
-            <p>Máy ảnh</p>
-        </div>
-        <div class="title-item">
-            <p>Ống kính</p>
-        </div>
-        <div class="title-item">
-            <p>Khuyến mãi</p>
-        </div>
-        <div class="title-item">
-            <p>Tin tức</p>
+</section>
+
+<!-- end about section -->
+
+
+<!-- contact section -->
+<section class="contact_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <div class="heading_container">
+                        <h2>
+                            Contact Us
+                        </h2>
+                    </div>
+                    <form action="">
+                        <div>
+                            <input type="text" placeholder="Full Name "/>
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email"/>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Phone number"/>
+                        </div>
+                        <div>
+                            <input type="text" class="message-box" placeholder="Message"/>
+                        </div>
+                        <div class="d-flex ">
+                            <button>
+                                SEND
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="img-box">
+                    <img src="{% static 'CameraShop/img/home/contact-img.jpg' %}" alt="">
+                </div>
+            </div>
         </div>
     </div>
-    <div class="slider-item">
-        <div class="slideshow-container">
-            <div class="mySlides fade">
-                <img src="{% static 'CameraShop/img/home/sale.png' %}">
-            </div>
+</section>
 
-            <div class="mySlides fade">
-                <img src="{% static 'CameraShop/img/home/user.png' %}">
-            </div>
+<!-- end contact section -->
 
-            <div class="mySlides fade">
-                <img src="{% static 'CameraShop/img/home/news.png' %}">
-            </div>
+<!-- client section -->
+<section class="client_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Testimonial
+            </h2>
         </div>
-        <br>
-        <div class="dot">
-            <span class="dot-item" onclick="currentSlide(1)"></span>
-            <span class="dot-item" onclick="currentSlide(2)"></span>
-            <span class="dot-item" onclick="currentSlide(3)"></span>
+        <div class="carousel-wrap ">
+            <div class="owl-carousel client_owl-carousel">
+                <div class="item">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="{% static 'CameraShop/img/home/c1.jpg' %}" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <div class="client_info">
+                                <div class="client_name">
+                                    <h5>
+                                        Mark Thomas
+                                    </h5>
+                                    <h6>
+                                        Customer
+                                    </h6>
+                                </div>
+                                <i class="fa fa-quote-left" aria-hidden="true"></i>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut
+                                labore
+                                et
+                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                nisi ut
+                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                velit esse
+                                cillum
+                                dolore eu fugia
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="{% static 'CameraShop/img/home/c1.jpg' %}" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <div class="client_info">
+                                <div class="client_name">
+                                    <h5>
+                                        Mark Thomas
+                                    </h5>
+                                    <h6>
+                                        Customer
+                                    </h6>
+                                </div>
+                                <i class="fa fa-quote-left" aria-hidden="true"></i>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut
+                                labore
+                                et
+                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                nisi ut
+                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                velit esse
+                                cillum
+                                dolore eu fugia
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="{% static 'CameraShop/img/home/c2.jpg' %}" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <div class="client_info">
+                                <div class="client_name">
+                                    <h5>
+                                        Alina Hans
+                                    </h5>
+                                    <h6>
+                                        Customer
+                                    </h6>
+                                </div>
+                                <i class="fa fa-quote-left" aria-hidden="true"></i>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut
+                                labore
+                                et
+                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                nisi ut
+                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                velit esse
+                                cillum
+                                dolore eu fugia
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="sale">
+</section>
+<!-- end client section -->
 
-</div>
-<!-- Slideshow container -->
+<!-- footer section -->
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-3 footer-col">
+                <div class="footer_detail">
+                    <h4>
+                        QTH
+                    </h4>
+                    <p>
+                        No. 1 agent distributing genuine Canon, Nikon, Sony cameras and camera accessories...
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        About Us
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                  Hoà Khánh Bắc, Liên Chiểu, Đà Nẵng 550000, Việt Nam
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                  Call +84 384933379
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  qth@gmail.com
+                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <form action="#">
+                        <input type="text" placeholder="Enter email"/>
+                        <button type="submit">
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 footer-col">
+                <div class="map_container">
+                    <div class="map">
+                        <div id="googleMap"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> QTH
+            </p>
+        </div>
+    </div>
+</footer>
+<!-- footer section -->
+
+<!-- jQery -->
+<script src="{% static 'CameraShop/js/jquery-3.4.1.min.js' %}"></script>
+<!-- popper js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<!-- bootstrap js -->
+<script src="{% static 'CameraShop/js/bootstrap.js' %}"></script>
+<!-- owl slider -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+</script>
+<!-- custom js -->
+<script src="{% static 'CameraShop/js/custom.js' %}"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+<!-- End Google Map -->
 
 </body>
+
 </html>

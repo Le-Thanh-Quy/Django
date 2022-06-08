@@ -2,6 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.html import mark_safe
 from django.templatetags.static import static
+import locale
 
 # Create your models here.
 
@@ -121,6 +122,10 @@ class Camera(models.Model):
     jack = models.CharField(max_length=100)
     size = models.CharField(max_length=100)
     weight = models.FloatField()
+
+    def getPrice(self):
+        locale.setlocale(locale.LC_ALL, 'vi_VN')
+        return locale.currency(self.price, grouping=True).split(',', 1)[0]
 
     def __str__(self):
         return self.name
