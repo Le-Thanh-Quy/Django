@@ -1,7 +1,10 @@
+from datetime import date
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.html import mark_safe
 from django.templatetags.static import static
+import locale
+
 
 # Create your models here.
 
@@ -121,6 +124,41 @@ class Camera(models.Model):
     jack = models.CharField(max_length=100)
     size = models.CharField(max_length=100)
     weight = models.FloatField()
+    quantityInStock = models.IntegerField(null=True)
+    importDate = models.DateField(null=True)
+    isDiscount = models.BooleanField(default=False)
+
+    def getPriceDiscount(self):
+        if self.isDiscount:
+            locale.setlocale(locale.LC_ALL, 'vi_VN')
+            return locale.currency(self.price - self.price * 0.06, grouping=True).split(',', 1)[0]
+        else:
+            locale.setlocale(locale.LC_ALL, 'vi_VN')
+            return locale.currency(self.price, grouping=True).split(',', 1)[0]
+
+    def getPrice(self):
+        locale.setlocale(locale.LC_ALL, 'vi_VN')
+        return locale.currency(self.price, grouping=True).split(',', 1)[0]
+
+    def getStatus(self):
+        if self.importDate is None:
+            return 4, "Sold out"
+        if (date.today() - self.importDate).days < 10:
+            if 5 > self.quantityInStock > 0:
+                return 0, "Hot"
+            elif self.quantityInStock == 0:
+                return 4, "Sold out"
+            elif self.isDiscount:
+                return 1, "Discount"
+            else:
+                return 2, "New"
+        elif self.quantityInStock > 0:
+            if self.isDiscount:
+                return 1, "Discount"
+            else:
+                return 3, "Stocking"
+        else:
+            return 4, "Sold out"
 
     def __str__(self):
         return self.name
