@@ -102,7 +102,7 @@ a:focus {
 /*header section*/
 .hero_area {
     position: relative;
-    /*min-height: 100vh;*/
+    /*min-height: 80vh;*/
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -492,7 +492,7 @@ a:focus {
 
 .price-discount {
     max-width: 100%;
-    color: #006d9a;
+    color: #9a0000!important;
     font-weight: bold !important;
     white-space: nowrap;
     overflow: hidden !important;

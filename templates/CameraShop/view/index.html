@@ -34,7 +34,8 @@
 </head>
 
 <body>
-<button onclick="topFunction()" id="myBtn" title="Go to top"><img src="{% static 'CameraShop/img/home/arrow-up.png' %}"></button>
+<button onclick="topFunction()" id="myBtn" title="Go to top"><img src="{% static 'CameraShop/img/home/arrow-up.png' %}">
+</button>
 <div class="hero_area">
 
     <!-- header section strats -->
@@ -59,13 +60,16 @@
                             <a class="nav-link" href="../">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="document.getElementById('camera-shop').scrollIntoView(({ behavior: 'smooth', block: 'start' }));">Camera</a>
+                            <a class="nav-link"
+                               onclick="document.getElementById('camera-shop').scrollIntoView(({ behavior: 'smooth', block: 'start' }));">Camera</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="document.getElementById('len-shop').scrollIntoView(({ behavior: 'smooth', block: 'start' }));">Lens</a>
+                            <a class="nav-link"
+                               onclick="document.getElementById('len-shop').scrollIntoView(({ behavior: 'smooth', block: 'start' }));">Lens</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="document.getElementById('contact-us').scrollIntoView(({ behavior: 'smooth', block: 'start' }));">Contact
+                            <a class="nav-link"
+                               onclick="document.getElementById('contact-us').scrollIntoView(({ behavior: 'smooth', block: 'start' }));">Contact
                                 Us</a>
                         </li>
                     </ul>
@@ -80,36 +84,6 @@
                         <a onclick="onSearch()">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </a>
-                        <script>
-                            let isHide = true;
-
-                            function onSearch() {
-                                if (isHide) {
-                                    showInputSearch();
-                                } else {
-                                    let searchContent = document.getElementById('input-search').value
-                                    if (searchContent.toString() === "") {
-                                        isHide = true;
-                                        hideInputSearch();
-                                    } else {
-                                        window.location.href = '../' + searchContent;
-                                    }
-
-                                }
-
-                            }
-
-                            function hideInputSearch() {
-                                document.getElementById('input-search').style.display = 'none'
-                            }
-
-                            function showInputSearch() {
-                                isHide = false;
-                                let inputSearch = document.getElementById('input-search');
-                                inputSearch.style.display = 'block'
-                                inputSearch.focus();
-                            }
-                        </script>
                     </div>
                 </div>
             </nav>
@@ -135,8 +109,8 @@
         <section class="slider_section ">
             <div id="customCarousel1" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    {% if list_camera_slides %}
-                        {% for camera in list_camera_slides %}
+                    {% if list_slides %}
+                        {% for slide in list_slides %}
                             <div class="carousel-item
                         {% if forloop.counter0 == 0 %}
                         active
@@ -147,10 +121,10 @@
                                         <div class="col-md-6">
                                             <div class="detail-box">
                                                 <h1>
-                                                    {{ camera.name }}
+                                                    {{ slide.name }}
                                                 </h1>
                                                 <p>
-                                                    {{ camera.description }}
+                                                    {{ slide.description }}
                                                 </p>
                                                 <div class="btn-box">
                                                     <a href="" class="btn1">
@@ -161,7 +135,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="img-box">
-                                                <img src="{{ camera.image.productFrontImage.url }}"
+                                                <img src="{{ slide.image.productFrontImage.url }}"
                                                      alt="">
                                             </div>
                                         </div>
@@ -172,8 +146,8 @@
                     {% endif %}
                 </div>
                 <ol class="carousel-indicators">
-                    {% if  list_camera_slides %}
-                        {% for camera in list_camera_slides %}
+                    {% if  list_slides %}
+                        {% for slide in list_slides %}
                             {% if forloop.counter0 == 0 %}
                                 <li data-target="#customCarousel1" data-slide-to="{{ forloop.counter0 }}"
                                     class="active"></li>
@@ -206,8 +180,8 @@
             </h2>
         </div>
         <div class="row">
-            {% if  list_camera_slides %}
-                {% for camera in list_camera_slides %}
+            {% if  list_camera %}
+                {% for camera in list_camera %}
                     {% if camera.getStatus.0 == 0 %}
                         <div class="col-md-6 ">
                             <div class="box">
@@ -231,9 +205,7 @@
 
                                         {% if camera.isDiscount %}
                                             <h6 class="price-discount">
-                                                <span>
                                                 {{ camera.getPrice }} <span class="detail-box-money">đ</span>
-                                                </span>
                                             </h6>
                                         {% else %}
                                             <h6>
@@ -253,84 +225,79 @@
                                 </a>
                             </div>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-            {% if list_camera %}
-                {% for camera in list_camera %}
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="box">
-                            <a href="">
-                                <div class="img-box">
-                                    <img src="{{ camera.image.productFrontImage.url }}"
-                                         onmouseover="this.src='{{ camera.image.productBackImage.url }}';"
-                                         onmouseout="this.src='{{ camera.image.productFrontImage.url }}';"
-                                         alt="">
-                                </div>
-                                <div class="detail-box">
-                                    <h6 class="detail-box-h6">
-                                        {{ camera.name }}
-                                    </h6>
-                                    <h6>
-                                        Price:
-                                        <span>
+                    {% else %}
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="box">
+                                <a href="">
+                                    <div class="img-box">
+                                        <img src="{{ camera.image.productFrontImage.url }}"
+                                             onmouseover="this.src='{{ camera.image.productBackImage.url }}';"
+                                             onmouseout="this.src='{{ camera.image.productFrontImage.url }}';"
+                                             alt="">
+                                    </div>
+                                    <div class="detail-box">
+                                        <h6 class="detail-box-h6">
+                                            {{ camera.name }}
+                                        </h6>
+                                        <h6>
+                                            Price:
+                                            <span>
                                             {{ camera.getPriceDiscount }} <span class="detail-box-money">đ</span>
                                         </span>
-                                    </h6>
-                                    {% if camera.isDiscount %}
-                                        <h6 class="price-discount">
-                                                <span>
-                                                {{ camera.getPrice }} <span class="detail-box-money">đ</span>
-                                                </span>
                                         </h6>
-                                    {% else %}
-                                        <h6>
+                                        {% if camera.isDiscount %}
+                                            <h6 class="price-discount">
+                                                {{ camera.getPrice }} <span class="detail-box-money">đ</span>
+                                            </h6>
+                                        {% else %}
+                                            <h6>
                                                 <span>
                                                     &ensp;
                                                 </span>
-                                        </h6>
-                                    {% endif %}
-                                </div>
-                                {% if camera.getStatus.0 == 1 %}
-                                    <div class="discount">
+                                            </h6>
+                                        {% endif %}
+                                    </div>
+                                    {% if camera.getStatus.0 == 1 %}
+                                        <div class="discount">
                                         <span>
                                              {{ camera.getStatus.1 }}
                                         </span>
-                                    </div>
+                                        </div>
 
-                                {% elif camera.getStatus.0 == 2 %}
-                                    <div class="new">
+                                    {% elif camera.getStatus.0 == 2 %}
+                                        <div class="new">
                                         <span>
                                              {{ camera.getStatus.1 }}
                                         </span>
-                                    </div>
+                                        </div>
 
-                                {% elif  camera.getStatus.0 == 3 %}
-                                    <div class="stocking">
+                                    {% elif  camera.getStatus.0 == 3 %}
+                                        <div class="stocking">
                                         <span>
                                             {{ camera.getStatus.1 }}
                                         </span>
-                                    </div>
-                                {% else %}
-                                    <div class="stock-out">
+                                        </div>
+                                    {% else %}
+                                        <div class="stock-out">
                                         <span>
                                            {{ camera.getStatus.1 }}
                                         </span>
-                                    </div>
-                                {% endif %}
-                            </a>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
-
             {% endif %}
-
-
         </div>
     </div>
 </section>
 
 <!-- end shop camera section -->
+
+
+
 <!-- start shop lens section -->
 
 <section class="shop_section layout_padding" id="len-shop">
@@ -343,31 +310,112 @@
         <div class="row">
             {% if list_len %}
                 {% for len in list_len %}
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="box">
-                            <a href="">
-                                <div class="img-box">
-                                    <img src="{{ len.image.productFrontImage.url }}" alt="">
-                                </div>
-                                <div class="detail-box">
-                                    <h6>
-                                        Smartwatch
-                                    </h6>
-                                    <h6>
-                                        Price:
+                    {% if len.getStatus.0 == 0 %}
+                        <div class="col-md-6 ">
+                            <div class="box">
+                                <a href="">
+                                    <div class="img-box">
+                                        <img src="{{ len.image.productFrontImage.url }}"
+                                             onmouseover="this.src='{{ len.image.productBackImage.url }}';"
+                                             onmouseout="this.src='{{ len.image.productFrontImage.url }}';"
+                                             alt="">
+                                    </div>
+                                    <div class="detail-box">
+                                        <h6 class="detail-box-h6">
+                                            {{ len.name }}
+                                        </h6>
+                                        <h6>
+                                            Price:
+                                            <span>
+                                            {{ len.getPriceDiscount }} <span class="detail-box-money">đ</span>
+                                        </span>
+                                        </h6>
+
+                                        {% if len.isDiscount %}
+                                            <h6 class="price-discount">
+                                                {{ len.getPrice }} <span class="detail-box-money">đ</span>
+                                            </h6>
+                                        {% else %}
+                                            <h6>
+                                                <span>
+                                                    &ensp;
+                                                </span>
+                                            </h6>
+                                        {% endif %}
+
+
+                                    </div>
+                                    <div class="hot">
                                         <span>
-                    $125
-                  </span>
-                                    </h6>
-                                </div>
-                                <div class="new">
-                <span>
-                  New
-                </span>
-                                </div>
-                            </a>
+                                            Hot
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="box">
+                                <a href="">
+                                    <div class="img-box">
+                                        <img src="{{ len.image.productFrontImage.url }}"
+                                             onmouseover="this.src='{{ len.image.productBackImage.url }}';"
+                                             onmouseout="this.src='{{ len.image.productFrontImage.url }}';"
+                                             alt="">
+                                    </div>
+                                    <div class="detail-box">
+                                        <h6 class="detail-box-h6">
+                                            {{ len.name }}
+                                        </h6>
+                                        <h6>
+                                            Price:
+                                            <span>
+                                            {{ len.getPriceDiscount }} <span class="detail-box-money">đ</span>
+                                        </span>
+                                        </h6>
+                                        {% if len.isDiscount %}
+                                            <h6 class="price-discount">
+                                                {{ len.getPrice }} <span class="detail-box-money">đ</span>
+                                            </h6>
+                                        {% else %}
+                                            <h6>
+                                                <span>
+                                                    &ensp;
+                                                </span>
+                                            </h6>
+                                        {% endif %}
+                                    </div>
+                                    {% if len.getStatus.0 == 1 %}
+                                        <div class="discount">
+                                        <span>
+                                             {{ len.getStatus.1 }}
+                                        </span>
+                                        </div>
+
+                                    {% elif len.getStatus.0 == 2 %}
+                                        <div class="new">
+                                        <span>
+                                             {{ len.getStatus.1 }}
+                                        </span>
+                                        </div>
+
+                                    {% elif  len.getStatus.0 == 3 %}
+                                        <div class="stocking">
+                                        <span>
+                                            {{ len.getStatus.1 }}
+                                        </span>
+                                        </div>
+                                    {% else %}
+                                        <div class="stock-out">
+                                        <span>
+                                           {{ len.getStatus.1 }}
+                                        </span>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
 

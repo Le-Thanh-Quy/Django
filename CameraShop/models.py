@@ -111,7 +111,7 @@ class Camera(models.Model):
     name = models.CharField(max_length=100)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     colors = models.ManyToManyField(Color, verbose_name="list of color")
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
     price = models.FloatField(validators=[MinValueValidator(100000), MaxValueValidator(100000000)])
     isoSpeed = models.ForeignKey(ISOSpeed, on_delete=models.CASCADE)
@@ -174,6 +174,7 @@ class FocalLength(models.Model):
 class Lens(models.Model):
     name = models.CharField(max_length=100)
     image = models.ForeignKey(Image, on_delete=models.CASCADE, null=True)
+    price = models.FloatField(validators=[MinValueValidator(100000), MaxValueValidator(100000000)], null=True)
     focalLength = models.ForeignKey(FocalLength, on_delete=models.CASCADE)
     aperture = models.ForeignKey(Aperture, on_delete=models.CASCADE)
     lensMount = models.ForeignKey(LensMount, on_delete=models.CASCADE)
@@ -181,6 +182,42 @@ class Lens(models.Model):
     size = models.CharField(max_length=100)
     weight = models.FloatField()
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    description = models.CharField(max_length=1000, null=True)
+    quantityInStock = models.IntegerField(null=True)
+    importDate = models.DateField(null=True)
+    isDiscount = models.BooleanField(default=False)
+
+    def getPriceDiscount(self):
+        if self.isDiscount:
+            locale.setlocale(locale.LC_ALL, 'vi_VN')
+            return locale.currency(self.price - self.price * 0.06, grouping=True).split(',', 1)[0]
+        else:
+            locale.setlocale(locale.LC_ALL, 'vi_VN')
+            return locale.currency(self.price, grouping=True).split(',', 1)[0]
+
+    def getPrice(self):
+        locale.setlocale(locale.LC_ALL, 'vi_VN')
+        return locale.currency(self.price, grouping=True).split(',', 1)[0]
+
+    def getStatus(self):
+        if self.importDate is None:
+            return 4, "Sold out"
+        if (date.today() - self.importDate).days < 10:
+            if 5 > self.quantityInStock > 0:
+                return 0, "Hot"
+            elif self.quantityInStock == 0:
+                return 4, "Sold out"
+            elif self.isDiscount:
+                return 1, "Discount"
+            else:
+                return 2, "New"
+        elif self.quantityInStock > 0:
+            if self.isDiscount:
+                return 1, "Discount"
+            else:
+                return 3, "Stocking"
+        else:
+            return 4, "Sold out"
 
     def __str__(self):
         return self.name
