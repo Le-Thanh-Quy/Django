@@ -87,8 +87,12 @@
                         </li>
                     </ul>
                     <div class="user_option-box">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i>
+                        {% if 'isAuth' in request.session %}
+                            <a href="/{{ request.session.isAuth }}/profile">
+                        {% else %}
+                            <a href="/login">
+                        {% endif %}
+                        <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
                         <form>
                             <input class="user_option-box-input" style="display: none" id="input-search" type="text"
@@ -733,7 +737,8 @@
                         </h2>
                     </div>
                     <p>
-                        No. 1 agent distributing genuine Canon, Nikon, Sony, Fujifilm, Zhiyun, DJI cameras and camera accessories.<br>
+                        No. 1 agent distributing genuine Canon, Nikon, Sony, Fujifilm, Zhiyun, DJI cameras and camera
+                        accessories.<br>
                         Guaranteed quality, safety, reputation and more
                     </p>
                 </div>

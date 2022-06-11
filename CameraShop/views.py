@@ -7,10 +7,6 @@ from .models import *
 
 
 def index(request):
-    # for camera in Camera.objects.all():
-    #     obj = Camera.objects.get(id=camera.id)
-    #     obj.quantityInStock = 9
-    #     obj.save()
     list_camera = Camera.objects.all().order_by("-id")
     list_camera = sorted(list_camera, key=lambda x: x.getStatus()[0], reverse=False)
 
@@ -26,7 +22,8 @@ def index(request):
         'list_len': list_len,
         'list_slides': list_slides,
         'is_search': False,
-        'slide_center_index': slide_center_index
+        'slide_center_index': slide_center_index,
+        'request': request
     }
     return render(request, 'CameraShop/view/index.html', context)
 
@@ -50,7 +47,8 @@ def search(request, content):
         'list_slides': list_slides,
         'is_search': True,
         'content_search': content,
-        'slide_center_index': slide_center_index
+        'slide_center_index': slide_center_index,
+        'request': request
     }
     return render(request, 'CameraShop/view/index.html', context)
 
@@ -70,6 +68,7 @@ def detail_camera(request, id_camera):
         'camera': product,
         'list_camera': list_camera,
         'list_len': list_len,
+        'request': request,
     }
     return render(request, 'CameraShop/view/detail.html', context)
 
@@ -89,5 +88,78 @@ def detail_len(request, id_len):
         'len': product,
         'list_camera': list_camera,
         'list_len': list_len,
+        'request': request,
     }
     return render(request, 'CameraShop/view/detail.html', context)
+
+
+def login(request):
+    context = {}
+    # context = {'isWrong': True, 'notification': request.session["isAuth"]}
+    # if 'isAuth' not in request.session:
+    #     request.session["isAuth"] = "haha"
+    #     context = {'isWrong': True, 'notification': 'hi'}
+    # else:
+    #     context = {'isWrong': True, 'notification': request.session["isAuth"]}
+    #     try:
+    #         del request.session['isAuth']
+    #     except KeyError:
+    #         pass
+
+    if request.method == "POST":
+        if request.POST.get("signin"):
+            user_name = request.POST.get("user_name")
+            password = request.POST.get("your_pass")
+            is_remember = request.POST.get("remember-me")
+
+            if not str(user_name).strip() or not str(password).strip():
+                context = {'isWrong': True, 'notification': "Please enter all fields"}
+            elif User.objects.filter(account=str(user_name).strip()).exists():
+                user = User.objects.filter(account=str(user_name).strip())[0]
+                if user.password == password:
+                    request.session["isAuth"] = user_name
+                    return index(request)
+                else:
+                    context = {'isWrong': True, 'notification': "Incorrect username or password"}
+            else:
+                context = {'isWrong': True, 'notification': "Incorrect username or password"}
+    return render(request, 'CameraShop/view/login.html', context)
+
+
+def register(request):
+    context = {}
+    if request.method == "POST":
+        if request.POST.get("signup"):
+            user_name = request.POST.get("name")
+            password = request.POST.get("pass")
+            re_password = request.POST.get("re_pass")
+            full_name = request.POST.get("full_name")
+            phone_number = request.POST.get("phone")
+            birth_date = request.POST.get("birthday")
+            address = request.POST.get("address")
+            if not str(user_name).strip() or not str(password).strip() or not str(re_password).strip() or not str(
+                    full_name).strip() or not str(phone_number).strip() or not str(birth_date).strip() or not str(
+                address).strip():
+                context = {'isWrong': True, 'notification': "Please enter all fields"}
+            elif str(password).strip() != str(re_password).strip():
+                context = {'isWrong': True, 'notification': "Password does not match"}
+            elif len(str(password).strip()) < 6:
+                context = {'isWrong': True, 'notification': "Passwords must be at least 6 characters"}
+            elif User.objects.filter(account=str(user_name).strip()).exists():
+                context = {'isWrong': True, 'notification': "Account already exists"}
+            else:
+                user = User(name=full_name, password=password, account=user_name, dateOfBirth=birth_date,
+                            phoneNumber=phone_number, address=address)
+                user.save()
+                context = {
+                    'isSuccessful': True,
+                    'notification': "Create Account Success",
+                    'user_name': str(user_name).strip(),
+                    'pass_word': str(password).strip()
+                }
+                return render(request, 'CameraShop/view/login.html', context)
+    return render(request, 'CameraShop/view/register.html', context)
+
+
+def profile(request, user_name):
+    return HttpResponse(user_name)

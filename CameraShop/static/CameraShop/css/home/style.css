@@ -324,6 +324,7 @@ a:focus {
     margin-right: 15px;
     margin-left: 5px;
     font-size: 17px;
+    cursor: pointer;
 }
 
 .user_option-box a:hover {
