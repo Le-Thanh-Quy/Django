@@ -2,7 +2,7 @@ import random
 from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime, date
-
+import re
 from .models import *
 
 
@@ -95,22 +95,10 @@ def detail_len(request, id_len):
 
 def login(request):
     context = {}
-    # context = {'isWrong': True, 'notification': request.session["isAuth"]}
-    # if 'isAuth' not in request.session:
-    #     request.session["isAuth"] = "haha"
-    #     context = {'isWrong': True, 'notification': 'hi'}
-    # else:
-    #     context = {'isWrong': True, 'notification': request.session["isAuth"]}
-    #     try:
-    #         del request.session['isAuth']
-    #     except KeyError:
-    #         pass
-
     if request.method == "POST":
         if request.POST.get("signin"):
             user_name = request.POST.get("user_name")
             password = request.POST.get("your_pass")
-            is_remember = request.POST.get("remember-me")
 
             if not str(user_name).strip() or not str(password).strip():
                 context = {'isWrong': True, 'notification': "Please enter all fields"}
@@ -124,6 +112,12 @@ def login(request):
             else:
                 context = {'isWrong': True, 'notification': "Incorrect username or password"}
     return render(request, 'CameraShop/view/login.html', context)
+
+
+def validNumber(phone_nuber):
+    valid_number = "^[+|0]{1}[0-9]{9,11}$"
+    pattern = re.compile(valid_number, re.IGNORECASE)
+    return pattern.match(phone_nuber) is not None
 
 
 def register(request):
@@ -145,6 +139,8 @@ def register(request):
                 context = {'isWrong': True, 'notification': "Password does not match"}
             elif len(str(password).strip()) < 6:
                 context = {'isWrong': True, 'notification': "Passwords must be at least 6 characters"}
+            elif not validNumber(str(phone_number)):
+                context = {'isWrong': True, 'notification': "Invalid phone number"}
             elif User.objects.filter(account=str(user_name).strip()).exists():
                 context = {'isWrong': True, 'notification': "Account already exists"}
             else:
@@ -162,4 +158,19 @@ def register(request):
 
 
 def profile(request, user_name):
-    return HttpResponse(user_name)
+    user = User.objects.filter(account=user_name)[0]
+    context = {
+        'user': user,
+        'request': request,
+    }
+    return render(request, 'CameraShop/view/profile.html', context)
+
+
+def logout(request):
+    context = {}
+    try:
+        del request.session['isAuth']
+        context = {'isWrong': True, 'notification': 'Sign out successful'}
+    except KeyError:
+        pass
+    return render(request, 'CameraShop/view/login.html', context)

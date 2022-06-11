@@ -32,7 +32,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/home/responsive.css' %}">
 
 </head>
-
+<script>
+    window.onpageshow = function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
+</script>
 <body>
 <button onclick="topFunction()" id="myBtn" title="Go to top"><img src="{% static 'CameraShop/img/home/arrow-up.png' %}">
 </button>

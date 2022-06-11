@@ -3340,7 +3340,7 @@ html .ui-button.ui-state-disabled:active {
 }
 
 
-.add-to-card {
+.add-to-cart {
     width: 48%;
     background: #3b4a6b !important;
     /* Old browsers */
@@ -3363,13 +3363,13 @@ html .ui-button.ui-state-disabled:active {
     text-align: center;
 }
 
-.add-to-card:hover {
+.add-to-cart:hover {
     color: white !important;
     background: #041238 !important;
 }
 
 
-/*.price-box-right .select-option-pay a:not(.buy-now):not(.add-to-card) {*/
+/*.price-box-right .select-option-pay a:not(.buy-now):not(.add-to-cart) {*/
 /*    !* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#00cb96+0,00be8e+100 *!*/
 /*    background: #3b4a6b;*/
 /*    !* Old browsers *!*/

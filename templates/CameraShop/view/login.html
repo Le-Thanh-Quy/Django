@@ -20,7 +20,15 @@
         {% if isSuccessful or isWrong %}
             showNotification()
         {% endif %}
+        {% if 'isAuth' in request.session %}
+            window.location.href = '/'
+        {% endif %}
     }
+    window.onpageshow = function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
 
 </script>
 <div class="main">
