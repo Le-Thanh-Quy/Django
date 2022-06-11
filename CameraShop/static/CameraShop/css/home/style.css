@@ -313,9 +313,9 @@ a:focus {
     align-items: center;
 }
 
-.user_option-box form input {
-    font-size: 12px;
-    padding: 5px;
+.user_option-box-input {
+    font-size: 12px!important;
+    padding: 5px!important;
 }
 
 .user_option-box a {

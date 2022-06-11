@@ -31,6 +31,19 @@
     <!-- responsive style -->
     <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/home/responsive.css' %}">
 
+
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/font-awesome.min.css' %}">
+    <!--bootstrap css-->
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/bootstrap.min.css' %}">
+    <!--animate css-->
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/animate-wow.css' %}">
+    <!--main css-->
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/style.css' %}">
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/slick.min.css' %}">
+    <!--responsive css-->
+    <link rel="stylesheet" href="{% static 'CameraShop/css/detail/responsive.css' %}">
+
 </head>
 
 <body>
@@ -92,95 +105,366 @@
     </header>
     <!-- end header section -->
     <!-- slider section -->
-    {% if not is_search %}
-        <div class="hero_social">
-            <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-            </a>
-            <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-            <a href="">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-            </a>
-            <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-            </a>
-        </div>
-        <section class="slider_section ">
-            <div id="customCarousel1" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    {% if list_slides %}
-                        {% for slide in list_slides %}
-                            <div class="carousel-item
-                        {% if forloop.counter0 == 0 %}
-                        active
-                        {% endif %}
-                        ">
-                                <div class="container-fluid ">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="detail-box">
-                                                <h1>
-                                                    {{ slide.name }}
-                                                </h1>
-                                                <p>
-                                                    {{ slide.description }}
-                                                </p>
-                                                <div class="btn-box">
-                                                    {% if slide_center_index >= forloop.counter %}
-                                                        <a href="{{ slide.id }}/camera" class="btn1">
-                                                            View detail
-                                                        </a>
-                                                    {% else %}
-                                                        <a href="{{ slide.id }}/len" class="btn1">
-                                                            View detail
-                                                        </a>
-                                                    {% endif %}
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="img-box">
-                                                <img src="{{ slide.image.productFrontImage.url }}"
-                                                     alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                <ol class="carousel-indicators">
-                    {% if  list_slides %}
-                        {% for slide in list_slides %}
-                            {% if forloop.counter0 == 0 %}
-                                <li data-target="#customCarousel1" data-slide-to="{{ forloop.counter0 }}"
-                                    class="active"></li>
-                            {% else %}
-                                <li data-target="#customCarousel1" data-slide-to="{{ forloop.counter0 }}"></li>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </ol>
-            </div>
-        </section>
-    {% endif %}
 
 
 </div>
-<!-- end slider section -->
+
+
+<!-- detail product -->
+{% if camera %}
+    <div class="product-page-main">
+        <div class="container-fluid w-95">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="prod-page-title">
+                        <p><a href="/">Home</a> > Camera > {{ camera.name }}</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="prod-page-title">
+                        <h1>{{ camera.name }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-8">
+                    <div class="md-prod-page">
+                        <div class="md-prod-page-in">
+                            <div class="page-preview">
+                                <div class="preview">
+                                    <div class="preview-pic tab-content">
+                                        <div class="tab-pane active" id="pic-1"><img
+                                                src="{{ camera.image.productFrontImage.url }}"
+                                                alt="#"/></div>
+                                        <div class="tab-pane" id="pic-2"><img
+                                                src="{{ camera.image.productBackImage.url }}"
+                                                alt="#"/>
+                                        </div>
+                                        <div class="tab-pane" id="pic-3"><img class="tab-content-img"
+                                                                              src="{{ camera.image.photo1.url }}"
+                                                                              alt="#"/>
+                                        </div>
+                                        <div class="tab-pane" id="pic-4"><img class="tab-content-img"
+                                                                              src="{{ camera.image.photo2.url }}"
+                                                                              alt="#"/>
+                                        </div>
+                                    </div>
+                                    <ul class="preview-thumbnail nav nav-tabs">
+                                        <li class="active"><a onmouseenter="this.click()" data-target="#pic-1"
+                                                              data-toggle="tab"><img
+                                                src="{{ camera.image.productFrontImage.url }}"
+                                                alt="#"/></a></li>
+                                        <li><a onmouseenter="this.click()" data-target="#pic-2" data-toggle="tab"><img
+                                                src="{{ camera.image.productBackImage.url }}" alt="#"/></a></li>
+                                        <li><a onmouseenter="this.click()" data-target="#pic-3" data-toggle="tab"><img
+                                                class="preview-thumbnail-nav-tabs-li-img"
+                                                src="{{ camera.image.photo1.url }}" alt="#"/></a></li>
+                                        <li><a onmouseenter="this.click()" data-target="#pic-4" data-toggle="tab"><img
+                                                class="preview-thumbnail-nav-tabs-li-img"
+                                                src="{{ camera.image.photo2.url }}" alt="#"/></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="description-box">
+                            <div class="dex-a">
+                                <h4>Description</h4>
+                                <p>
+                                    {{ camera.description }}
+                                </p>
+                                <br>
+                            </div>
+                            <div class="spe-a">
+                                <h4>Specifications</h4>
+                                <ul>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Iso Speed</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.isoSpeed }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Shutter Speed</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.shutterSpeed }} second</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Continuous Shooting Rate</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.continuousShootingRate }} fps</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Sensor</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.sensor }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Lens Mount</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.lensMount }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Resolution</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.resolution }} Megapixel</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Card Slots</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.cardSlots }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Jack</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.jack }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Size</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.size }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Weight</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ camera.weight }} g</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-12">
+                    <div class="price-box-right">
+                        <h2>
+                            {{ camera.company }}
+                        </h2>
+                        <h4>
+                            Quantity in stock: <span>{{ camera.quantityInStock }}</span>
+                        </h4>
+                        <h4 class="option-color">Color</h4>
+                        <select class="form-control select-custom">
+                            {% for color in camera.colors.all %}
+                                <option class="option-custom">{{ color }}</option>
+                            {% endfor %}
+                        </select>
+                        <h3>
+                            Price:
+                            <span>
+                            {{ camera.getPriceDiscount }} <span class="detail-box-money">đ</span>
+                        </span>
+                        </h3>
+                        {% if camera.isDiscount %}
+                            <h3 class="price-discount">
+                                {{ camera.getPrice }} <span class="detail-box-money">đ</span>
+                            </h3>
+                        {% endif %}
+                        <div class="select-option-pay">
+                            <a href="#" class="buy-now">Buy now</a>
+                            <a href="#" class="add-to-card">Add to cart</a>
+                        </div>
+                        <h5><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Warranty:</strong> 24 months at
+                            <strong>QTH</strong> Vietnam
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="product-page-main">
+        <div class="container-fluid w-95">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="prod-page-title">
+                        <p><a href="/">Home</a> > Len > {{ len.name }}</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="prod-page-title">
+                        <h1>{{ len.name }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-8">
+                    <div class="md-prod-page">
+                        <div class="md-prod-page-in">
+                            <div class="page-preview">
+                                <div class="preview">
+                                    <div class="preview-pic tab-content">
+                                        <div class="tab-pane active" id="pic-1"><img
+                                                src="{{ len.image.productFrontImage.url }}"
+                                                alt="#"/></div>
+                                        <div class="tab-pane" id="pic-2"><img
+                                                src="{{ len.image.productBackImage.url }}"
+                                                alt="#"/>
+                                        </div>
+                                        <div class="tab-pane" id="pic-3"><img class="tab-content-img"
+                                                                              src="{{ len.image.photo1.url }}"
+                                                                              alt="#"/>
+                                        </div>
+                                        <div class="tab-pane" id="pic-4"><img class="tab-content-img"
+                                                                              src="{{ len.image.photo2.url }}"
+                                                                              alt="#"/>
+                                        </div>
+                                    </div>
+                                    <ul class="preview-thumbnail nav nav-tabs">
+                                        <li class="active"><a onmouseenter="this.click()" data-target="#pic-1"
+                                                              data-toggle="tab"><img
+                                                src="{{ len.image.productFrontImage.url }}"
+                                                alt="#"/></a></li>
+                                        <li><a onmouseenter="this.click()" data-target="#pic-2" data-toggle="tab"><img
+                                                src="{{ len.image.productBackImage.url }}" alt="#"/></a></li>
+                                        <li><a onmouseenter="this.click()" data-target="#pic-3" data-toggle="tab"><img
+                                                class="preview-thumbnail-nav-tabs-li-img"
+                                                src="{{ len.image.photo1.url }}" alt="#"/></a></li>
+                                        <li><a onmouseenter="this.click()" data-target="#pic-4" data-toggle="tab"><img
+                                                class="preview-thumbnail-nav-tabs-li-img"
+                                                src="{{ len.image.photo2.url }}" alt="#"/></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="description-box">
+                            <div class="dex-a">
+                                <h4>Description</h4>
+                                <p>
+                                    {{ len.description }}
+                                </p>
+                                <br>
+                            </div>
+                            <div class="spe-a">
+                                <h4>Specifications</h4>
+                                <ul>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Focal Length</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ len.focalLength }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Aperture</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ len.aperture }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Lens Mount</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ len.lensMount }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>LensFormat</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ len.lensFormat }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Size</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ len.size }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="col-md-4">
+                                            <h5>Weight</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>{{ len.weight }} g</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-12">
+                    <div class="price-box-right">
+                        <h2>
+                            {{ len.lensMount }}
+                        </h2>
+                        <h4>
+                            Quantity in stock: <span>{{ len.quantityInStock }}</span>
+                        </h4>
+                        <h4 class="option-color">Color</h4>
+                        <select class="form-control select-custom">
+                            <option class="option-custom">{{ len.color }}</option>
+                        </select>
+                        <h3>
+                            Price:
+                            <span>
+                            {{ len.getPriceDiscount }} <span class="detail-box-money">đ</span>
+                        </span>
+                        </h3>
+
+                        {% if len.isDiscount %}
+                            <h3 class="price-discount">
+                                {{ len.getPrice }} <span class="detail-box-money">đ</span>
+                            </h3>
+                        {% endif %}
+                        <div class="select-option-pay">
+                            <a href="#" class="buy-now">Buy now</a>
+                            <a href="#" class="add-to-card">Add to cart</a>
+                        </div>
+                        <h5><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Warranty:</strong> 24 months at
+                            <strong>QTH</strong> Vietnam
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- end detail product -->
+
 
 <!-- shop camera section -->
 
 <section class="shop_section layout_padding_camera " id="camera-shop">
-    <div class="container">
+    <div class="container-fluid w-95">
         <h3 class="label-result">
-            {% if is_search %}
-                Search results for&ensp;<span>"{{ content_search }}"</span>
-            {% endif %}
+            Related Products
         </h3>
         <div class="heading_container heading_center">
             <h2>
@@ -308,7 +592,7 @@
 <!-- start shop lens section -->
 
 <section class="shop_section layout_padding" id="len-shop">
-    <div class="container">
+    <div class="container-fluid w-95">
         <div class="heading_container heading_center">
             <h2>
                 Lens
@@ -433,7 +717,6 @@
 <!-- end shop lens section -->
 
 <!-- about section -->
-
 <section class="about_section layout_padding">
     <div class="container  ">
         <div class="row">
@@ -450,7 +733,7 @@
                         </h2>
                     </div>
                     <p>
-                                                No. 1 agent distributing genuine Canon, Nikon, Sony, Fujifilm, Zhiyun, DJI cameras and camera accessories.<br>
+                        No. 1 agent distributing genuine Canon, Nikon, Sony, Fujifilm, Zhiyun, DJI cameras and camera accessories.<br>
                         Guaranteed quality, safety, reputation and more
                     </p>
                 </div>
@@ -458,7 +741,6 @@
         </div>
     </div>
 </section>
-
 <!-- end about section -->
 
 
@@ -537,7 +819,8 @@
                                 incididunt ut
                                 labore
                                 et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                laboris
                                 nisi ut
                                 aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
                                 velit esse
@@ -569,7 +852,8 @@
                                 incididunt ut
                                 labore
                                 et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                laboris
                                 nisi ut
                                 aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
                                 velit esse
@@ -601,7 +885,8 @@
                                 incididunt ut
                                 labore
                                 et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                laboris
                                 nisi ut
                                 aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
                                 velit esse
@@ -719,6 +1004,16 @@
 <!-- Google Map -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
 <!-- End Google Map -->
+
+<script src="{% static 'CameraShop/js/detail/jquery-1.12.4.min.js' %}"></script>
+<!--bootstrap js-->
+<script src="{% static 'CameraShop/js/detail/bootstrap.min.js' %}"></script>
+<script src="{% static 'CameraShop/js/detail/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'CameraShop/js/detail/slick.min.js' %}"></script>
+<script src="{% static 'CameraShop/js/detail/select2.full.min.js' %}"></script>
+<script src="{% static 'CameraShop/js/detail/wow.min.js' %}"></script>
+<!--custom js-->
+<script src="{% static 'CameraShop/js/detail/custom.js' %}"></script>
 
 </body>
 
