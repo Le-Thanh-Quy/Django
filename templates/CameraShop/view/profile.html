@@ -32,6 +32,9 @@
 <body>
 <script>
     window.onload = function () {
+        {% if isWrong %}
+            showNotification()
+        {% endif %}
         {% if 'isAuth' not in request.session %}
             window.location.href = '/login'
         {% endif %}
@@ -41,9 +44,17 @@
             window.location.reload();
         }
     };
+
+    function showNotification() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 3000);
+    }
 </script>
 <div class="container rounded bg-white mt-5 mb-5">
-    <p class="go-home"><a href="/">Home</a> > {{ user.account }}</p>
+    <p class="go-home">{{ user.account }}</p>
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -64,18 +75,24 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Profile Settings</h4>
                 </div>
-                <form action="/" method="post">
+                <form action="/{{ user.account }}/profile" method="post">
                     {% csrf_token %}
                     <div class="row mt-2">
                         <div class="col-md-12">
                             <label class="labels">Name</label>
-                            <input type="text" class="form-control" placeholder="full name" value="{{ user.name }}">
+                            <input type="text"
+                                   id="name"
+                                   name="name"
+                                   class="form-control"
+                                   placeholder="full name" value="{{ user.name }}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Phone number</label>
                             <input type="tel"
+                                   id="phone"
+                                   name="phone"
                                    class="form-control"
                                    placeholder="phone number"
                                    value="{{ user.phoneNumber }}">
@@ -83,13 +100,17 @@
                         <div class="col-md-12">
                             <label class="labels">Date of birth</label>
                             <input type="date"
+                                   id="birthday"
+                                   name="birthday"
                                    class="form-control"
                                    placeholder="date of birth"
-                                   value="{{ user.dateOfBirth.year }}-{{ user.dateOfBirth.month }}-{{ user.dateOfBirth.day }}">
+                                   value="{{ dateOfBirth }}">
                         </div>
                         <div class="col-md-12">
                             <label class="labels">Address</label>
                             <input type="text"
+                                   id="address"
+                                   name="address"
                                    class="form-control"
                                    placeholder="address"
                                    value="{{ user.address }}">
@@ -98,16 +119,24 @@
                     <div class="row mt-3">
                         <div class="col-md-6"><label class="labels">User Name</label>
                             <input type="text" class="form-control"
+                                   id="user-name"
+                                   name="user-name"
                                    placeholder="user name" value="{{ user.account }}" disabled>
                         </div>
                         <div class="col-md-6"><label class="labels">Password</label>
                             <input type="password"
+                                   id="password"
+                                   name="password"
                                    class="form-control" value="{{ user.password }}"
                                    placeholder="password">
                         </div>
                     </div>
                     <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                        <input class="btn btn-primary profile-button"
+                               id="update-profile"
+                               name="update-profile"
+                               value="Save Profile"
+                               type="submit">
                     </div>
                 </form>
 
@@ -116,24 +145,22 @@
         <div class="col-md-4">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center experience">
-                    <span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span>
+                    <span style="font-weight: 700">QTH</span><a href="/"><span class="border px-3 p-1 add-experience"><i
+                        class="fa fa-camera"></i>&nbsp; Continue shopping</span></a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span>Purchase history</span><a href=""><span class="border px-3 p-1 add-experience"><i
+                        class="fa fa-money"></i></span></a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span>Shopping cart</span><a href=""><span class="border px-3 p-1 add-experience"><i
+                        class="fa fa-shopping-cart"></i></span></a>
                 </div>
                 <br>
-                <div class="col-md-12"><label class="labels">Experience in Designing</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="experience"
-                           value=""></div>
-                <br>
-                <div class="col-md-12"><label class="labels">Additional Details</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="additional details"
-                           value=""></div>
             </div>
         </div>
     </div>
 </div>
-
+<div id="snackbar">{{ notification }}</div>
 </body>
 </html>
