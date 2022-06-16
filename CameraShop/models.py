@@ -230,6 +230,7 @@ class User(models.Model):
     address = models.CharField(max_length=100)
     account = models.CharField(max_length=15)
     password = models.CharField(max_length=10)
+    gender = models.CharField(max_length=6, null=True, default="Male")
 
     def __str__(self):
         return self.name

@@ -42,7 +42,11 @@
 <body>
 <button onclick="topFunction()" id="myBtn" title="Go to top"><img src="{% static 'CameraShop/img/home/arrow-up.png' %}">
 </button>
-<div class="hero_area">
+<div class="hero_area"
+        {% if is_search %}
+     style="min-height: auto"
+        {% endif %}
+>
 
     <!-- header section strats -->
     <header class="header_section">

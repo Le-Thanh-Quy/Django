@@ -58,7 +58,8 @@ def detail_camera(request, id_camera):
 
     list_camera_all = Camera.objects.all().order_by("-id")
     list_camera = [x for x in list_camera_all if str(x.lensMount).upper().find(str(product.lensMount).upper()) != -1]
-    list_camera = set(list_camera + [x for x in list_camera_all if str(x.company).upper().find(str(product.company).upper()) != -1])
+    list_camera = set(
+        list_camera + [x for x in list_camera_all if str(x.company).upper().find(str(product.company).upper()) != -1])
     list_camera = sorted(list_camera, key=lambda x: x.getStatus()[0], reverse=False)
 
     list_len = Lens.objects.all().order_by("-id")
@@ -83,7 +84,8 @@ def detail_len(request, id_len):
 
     list_len_all = Lens.objects.all().order_by("-id")
     list_len = [x for x in list_len_all if str(x.lensMount).upper().find(str(product.lensMount).upper()) != -1]
-    list_len = set(list_len + [x for x in list_len_all if str(x.lensFormat).upper().find(str(product.lensFormat).upper()) != -1])
+    list_len = set(
+        list_len + [x for x in list_len_all if str(x.lensFormat).upper().find(str(product.lensFormat).upper()) != -1])
     list_len = sorted(list_len, key=lambda x: x.getStatus()[0], reverse=False)
 
     context = {
@@ -162,6 +164,7 @@ def register(request):
 def profile(request, user_name):
     context = {}
     is_notification = False
+    is_modal = False
     notification = ""
     if request.method == "POST":
         if request.POST.get("update-profile"):
@@ -170,10 +173,10 @@ def profile(request, user_name):
             phone_number = request.POST.get("phone")
             birthday = request.POST.get("birthday")
             address = request.POST.get("address")
-            print(full_name)
-            if not str(password).strip() or not str(
-                    full_name).strip() or not str(phone_number).strip() or not str(birthday).strip() or not str(
-                address).strip():
+            gender = request.POST.get("gender")
+            if not str(password).strip() or not str(full_name).strip() or not str(phone_number).strip() or not str(
+                    birthday).strip() or not str(
+                    address).strip() or not str(gender).strip():
                 is_notification = True
                 notification = "Please enter all fields"
             elif not validNumber(str(phone_number)):
@@ -181,6 +184,10 @@ def profile(request, user_name):
                 notification = "Invalid phone number"
             else:
                 new_user = User.objects.filter(account=user_name)[0]
+                if gender == "female":
+                    new_user.gender = "Female"
+                else:
+                    new_user.gender = "Male"
                 new_user.name = full_name
                 new_user.address = address
                 new_user.dateOfBirth = birthday
@@ -188,6 +195,31 @@ def profile(request, user_name):
                 new_user.save()
                 is_notification = True
                 notification = "Update successful"
+        elif request.POST.get("reset-password"):
+            is_modal = True
+            current_password = request.POST.get("current-password")
+            new_password = request.POST.get("new-password")
+            confirm_password = request.POST.get("confirm-password")
+            user_password = User.objects.filter(account=user_name)[0].password
+            if not str(current_password).strip() or not str(new_password).strip() or not str(confirm_password).strip():
+                is_notification = True
+                notification = "Please enter all fields"
+            elif not str(new_password) == str(confirm_password):
+                is_notification = True
+                notification = "Password does not match"
+            elif len(str(new_password).strip()) < 6:
+                is_notification = True
+                notification = "Passwords must be at least 6 characters"
+            elif not str(current_password) == str(user_password):
+                is_notification = True
+                notification = "Current password does not match"
+            else:
+                new_user = User.objects.filter(account=user_name)[0]
+                new_user.password = new_password
+                new_user.save()
+                is_notification = True
+                notification = "Update successful"
+                is_modal = False
 
     user = User.objects.filter(account=user_name)[0]
     user.password = "*" * len(user.password)
@@ -205,7 +237,8 @@ def profile(request, user_name):
         'dateOfBirth': date_of_birth,
         'request': request,
         'isWrong': is_notification,
-        'notification': notification
+        'notification': notification,
+        'is_modal': is_modal
     }
     return render(request, 'CameraShop/view/profile.html', context)
 
