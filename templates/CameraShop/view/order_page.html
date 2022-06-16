@@ -4,10 +4,7 @@
 <script src="https://cdn03.jotfor.ms/js/vendor/jquery-1.8.0.min.js?v=3.3.33805" type="text/javascript"></script>
 <script defer src="https://cdn01.jotfor.ms/js/vendor/maskedinput.min.js?v=3.3.33805" type="text/javascript"></script>
 <script defer src="https://cdn02.jotfor.ms/js/vendor/jquery.maskedinput.min.js?v=3.3.33805" type="text/javascript"></script>
-<script src="https://cdn03.jotfor.ms/js/payments/paypalcomplete.js?v=3.3.33805" type="text/javascript"></script>
-<script src="https://cdn01.jotfor.ms/js/payments/paymentUtils.js?v=3.3.33805" type="text/javascript"></script>
 <script src="https://cdn02.jotfor.ms/js/libraries/promise-polyfill.js"></script>
-<script src="https://cdn03.jotfor.ms/js/payments/payment_form_embedded.js?v=3.3.33805" type="text/javascript"></script>
 
 
 <script type="text/javascript">	JotForm.newDefaultTheme = true;
@@ -45,19 +42,19 @@
         <div class="form-header-group  header-large">
           <div class="header-text httal htvam">
             <h1 id="header_1" class="form-header" data-component="header">
-              Online Store
+              QTH Store
             </h1>
           </div>
         </div>
       </li>
-      <li class="form-line card-3col" data-type="control_paypalcomplete" id="id_19" data-payment="true">
+      <li class="form-line card-3col"  id="id_19" data-payment="true">
         <label class="form-label form-label-top" id="label_19" for="input_19"> Products </label>
         <div id="cid_19" class="form-input-wide" data-layout="full">
           <div data-wrapper-react="true">
             <div data-wrapper-react="true" class="product-container-wrapper">
               <div class="filter-container">
               </div>
-              <input type="hidden" name="simple_fpc" data-payment_type="paypalcomplete" data-component="payment1" value="19" />
+              <input type="hidden" name="simple_fpc"  data-component="payment1" value="19" />
               <input type="hidden" name="payment_total_checksum" id="payment_total_checksum" data-component="payment2" />
               <div id="image-overlay" class="overlay-content" style="display:none">
                 <img id="current-image" />
@@ -625,7 +622,7 @@
         <label class="form-label form-label-top" id="label_20" for="input_20"> Payment Methods </label>
         <div id="cid_20" class="form-input-wide" data-layout="full">
           <div class="payment-methods-area">
-            <div data-wrapper-react="true" class="paypalcomplete-payment-wrapper" data-sandbox="disabled" data-currency="USD" data-auth-only="No" data-show-spb="true" data-show-card-fields="true">
+            <div data-wrapper-react="true"  data-sandbox="disabled" data-currency="USD" data-auth-only="No" data-show-spb="true" data-show-card-fields="true">
               <div id="paypal-commerce-platform-container">
                 <div class="paypal-toggle-buttons">
                   <div class="paypal-toggle">
