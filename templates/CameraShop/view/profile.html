@@ -176,11 +176,13 @@
                         class="fa fa-camera"></i>&nbsp; Continue shopping</span></a>
                 </div>
                 <div class="d-flex justify-content-between align-items-center experience">
-                    <span>Purchase history</span><a href=""><span class="border px-3 p-1 add-experience"><i
+                    <span>Purchase history</span><a onclick="openHistory()"><span
+                        class="border px-3 p-1 add-experience"><i
                         class="fa fa-money"></i></span></a>
                 </div>
                 <div class="d-flex justify-content-between align-items-center experience">
-                    <span>Shopping cart</span><a href=""><span class="border px-3 p-1 add-experience"><i
+                    <span>Shopping cart</span><a href="/{{ user.account }}/order_page"><span
+                        class="border px-3 p-1 add-experience"><i
                         class="fa fa-shopping-cart"></i></span></a>
                 </div>
                 <br>
@@ -239,6 +241,81 @@
                            type="submit">
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModalHistory" class="modalHistory"
+>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Purchase history</h4>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-11 mx-auto">
+                        <!-- List group-->
+                        <ul class="list-group ">
+                            {% for item in list_bill %}
+                                <a href="/{{ item.id }}/bill_page" style="text-decoration: none">
+                                    <li class="list-group-item" style="margin-bottom: 15px!important;">
+                                        <!-- Custom content-->
+                                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                                            <div class="media-body order-2 order-lg-1">
+                                                <h5 class="mt-0 font-weight-bold mb-2">
+                                                    {% if item.cameras.all.0.camera %}
+                                                        {{ item.cameras.all.0.camera }} ...
+                                                    {% else %}
+                                                        {{ item.lens.all.0.lens }} ...
+                                                    {% endif %}
+
+                                                </h5>
+                                                <p class="font-italic text-muted mb-0 small">{{ item.address }}</p>
+                                                <p class="font-italic text-muted mb-0 small">{{ item.releaseTime }}</p>
+                                                <h6 class="mt-0 font-weight-bold mb-2">{{ item.paymentMethods }}</h6>
+                                                <div class="d-flex align-items-center justify-content-lg-evenly mt-1">
+                                                    <h6 class="font-weight-bold my-2"
+                                                        style="margin-right: 20px">{{ item.getTotalMoney }}đ</h6>
+
+                                                    <h6 class="font-weight-bold my-2"
+                                                        style="text-decoration: line-through; color: #5f3f3f">{{ item.getTotalMoneyNoDiscount }}đ</h6>
+                                                </div>
+                                            </div>
+                                            <img
+                                                 onmouseover=" this.src=
+                                                         {% if item.cameras.all.0.camera %}
+                                                             '{{ item.cameras.all.0.camera.image.productBackImage.url }}'
+                                                         {% else %}
+                                                             '{{ item.lens.all.0.lens.image.productBackImage.url }}'
+                                                         {% endif %} ;"
+                                                 onmouseout=" this.src=
+                                                         {% if item.cameras.all.0.camera %}
+                                                             '{{ item.cameras.all.0.camera.image.productFrontImage.url }}'
+                                                         {% else %}
+                                                             '{{ item.lens.all.0.lens.image.productFrontImage.url }}'
+                                                         {% endif %} ;"
+                                                 src="
+                                            {% if item.cameras.all.0.camera %}
+                                                {{ item.cameras.all.0.camera.image.productFrontImage.url }}
+                                            {% else %}
+                                                {{ item.lens.all.0.lens.image.productFrontImage.url }}
+                                            {% endif %}
+
+                                            " alt="Generic placeholder image"
+                                                 width="200"
+                                                 class="ml-lg-5 order-1 order-lg-2">
+                                        </div> <!-- End -->
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

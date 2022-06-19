@@ -128,6 +128,9 @@ class Camera(models.Model):
     importDate = models.DateField(null=True)
     isDiscount = models.BooleanField(default=False)
 
+    def getQuantityInStockRange(self):
+        return range(2, self.quantityInStock + 1)
+
     def getPriceDiscount(self):
         if self.isDiscount:
             locale.setlocale(locale.LC_ALL, 'vi_VN')
@@ -136,9 +139,21 @@ class Camera(models.Model):
             locale.setlocale(locale.LC_ALL, 'vi_VN')
             return locale.currency(self.price, grouping=True).split(',', 1)[0]
 
+    def getPriceDiscountFloat(self):
+        if self.isDiscount:
+            return self.price - self.price * 0.06
+        else:
+            return self.price
+
+    def getPriceFloat(self):
+        return self.price
+
     def getPrice(self):
         locale.setlocale(locale.LC_ALL, 'vi_VN')
         return locale.currency(self.price, grouping=True).split(',', 1)[0]
+
+    def isCamera(self):
+        return 1
 
     def getStatus(self):
         if self.importDate is None:
@@ -181,11 +196,14 @@ class Lens(models.Model):
     lensFormat = models.ForeignKey(LensFormat, on_delete=models.CASCADE)
     size = models.CharField(max_length=100)
     weight = models.FloatField()
-    color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    colors = models.ManyToManyField(Color, verbose_name="list of color")
     description = models.CharField(max_length=1000, null=True)
     quantityInStock = models.IntegerField(null=True)
     importDate = models.DateField(null=True)
     isDiscount = models.BooleanField(default=False)
+
+    def getQuantityInStockRange(self):
+        return range(2, self.quantityInStock + 1)
 
     def getPriceDiscount(self):
         if self.isDiscount:
@@ -195,9 +213,21 @@ class Lens(models.Model):
             locale.setlocale(locale.LC_ALL, 'vi_VN')
             return locale.currency(self.price, grouping=True).split(',', 1)[0]
 
+    def getPriceDiscountFloat(self):
+        if self.isDiscount:
+            return self.price - self.price * 0.06
+        else:
+            return self.price
+
+    def getPriceFloat(self):
+        return self.price
+
     def getPrice(self):
         locale.setlocale(locale.LC_ALL, 'vi_VN')
         return locale.currency(self.price, grouping=True).split(',', 1)[0]
+
+    def isCamera(self):
+        return 0
 
     def getStatus(self):
         if self.importDate is None:
@@ -237,35 +267,61 @@ class User(models.Model):
 
 
 class CameraBill(models.Model):
-    Payment_Methods = (
-        ('Ship Cod', 'Thanh toán khi nhận hàng'),
-        ('Banking', 'Thanh toán qua thẻ tín dụng'),
-        ('Amortization', 'Trả góp')
-    )
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.IntegerField(null=True)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
-    paymentMethods = models.CharField(max_length=100, choices=Payment_Methods)
-    releaseTime = models.DateTimeField()
-    totalMoney = models.FloatField()
 
     def __str__(self):
-        name = self.user.name + str(self.releaseTime)
+        return str(self.id)
+
+
+class LenBill(models.Model):
+    lens = models.ForeignKey(Lens, on_delete=models.CASCADE)
+    quantity = models.IntegerField(null=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class Bill(models.Model):
+    Payment_Methods = (
+        ('Cash on delivery', 'Cash on delivery'),
+        ('Debit or Credit Card', 'Debit or Credit Card'),
+        ('PayPal', 'PayPal')
+    )
+    cameras = models.ManyToManyField(CameraBill, verbose_name="list of camera bill")
+    lens = models.ManyToManyField(LenBill, verbose_name="list of len bill")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    paymentMethods = models.CharField(max_length=100, choices=Payment_Methods)
+    address = models.CharField(max_length=1500, null=True)
+    instructions = models.CharField(max_length=1500, null=True)
+    releaseTime = models.CharField(max_length=200)
+    totalMoney = models.FloatField(null=True)
+    totalMoneyNoDiscount = models.FloatField(null=True)
+
+    def __str__(self):
+        name = self.user.name + " " + str(self.releaseTime)
         return name
 
+    def getTotalMoneyNoDiscount(self):
+        locale.setlocale(locale.LC_ALL, 'vi_VN')
+        return locale.currency(self.totalMoneyNoDiscount, grouping=True).split(',', 1)[0]
 
-class LensBill(models.Model):
-    Payment_Methods = (
-        ('Ship Cod', 'Thanh toán khi nhận hàng'),
-        ('Banking', 'Thanh toán qua thẻ tín dụng'),
-        ('Amortization', 'Trả góp')
-    )
-    lens = models.ForeignKey(Lens, on_delete=models.CASCADE)
+    def getTotalMoney(self):
+        locale.setlocale(locale.LC_ALL, 'vi_VN')
+        return locale.currency(self.totalMoney, grouping=True).split(',', 1)[0]
+
+    def getTotalDiscount(self):
+        locale.setlocale(locale.LC_ALL, 'vi_VN')
+        return locale.currency(self.totalMoneyNoDiscount - self.totalMoney, grouping=True).split(',', 1)[0]
+
+
+class Order(models.Model):
+    lens = models.ManyToManyField(Lens, verbose_name="list of len")
+    cameras = models.ManyToManyField(Camera, verbose_name="list of camera")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    paymentMethods = models.CharField(max_length=100, choices=Payment_Methods)
-    releaseTime = models.DateTimeField()
-    totalMoney = models.FloatField()
 
     def __str__(self):
-        name = self.user.name + str(self.releaseTime)
+        name = self.user.name
         return name

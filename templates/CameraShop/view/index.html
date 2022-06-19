@@ -91,6 +91,15 @@
                         {% endif %}
                         <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
+
+                        {% if 'isAuth' in request.session %}
+                            <a href="/{{ request.session.isAuth }}/order_page">
+                        {% else %}
+                            <a href="/login">
+                        {% endif %}
+                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        </a>
+
                         <form>
                             <input class="user_option-box-input" style="display: none" id="input-search" type="text"
                                    placeholder="Search..."
@@ -525,7 +534,7 @@
     <div class="container">
         <div class="heading_container heading_center">
             <h2>
-                Development Team
+                Team
             </h2>
         </div>
         <div class="carousel-wrap ">
@@ -533,7 +542,7 @@
                 <div class="item">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{% static 'CameraShop/img/home/c1.jpg' %}" alt="">
+                            <img src="{% static 'CameraShop/img/team/quy.jpg' %}" alt="">
                         </div>
                         <div class="detail-box">
                             <div class="client_info">
@@ -542,22 +551,16 @@
                                         Le Thanh Quy
                                     </h5>
                                     <h6>
-                                        Customer
+                                        Development
                                     </h6>
                                 </div>
                                 <i class="fa fa-quote-left" aria-hidden="true"></i>
                             </div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore
-                                et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse
-                                cillum
-                                dolore eu fugia
+                                Database design<br>
+                                Home page<br>
+                                Search camera<br>
+                                Detail product<br>
                             </p>
                         </div>
                     </div>
@@ -565,7 +568,7 @@
                 <div class="item">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{% static 'CameraShop/img/home/c1.jpg' %}" alt="">
+                            <img src="{% static 'CameraShop/img/team/trinh.jpg' %}" alt="">
                         </div>
                         <div class="detail-box">
                             <div class="client_info">
@@ -574,22 +577,16 @@
                                         Tran Nguyen Anh Trinh
                                     </h5>
                                     <h6>
-                                        Customer
+                                        Development
                                     </h6>
                                 </div>
                                 <i class="fa fa-quote-left" aria-hidden="true"></i>
                             </div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore
-                                et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse
-                                cillum
-                                dolore eu fugia
+                                Database design<br>
+                                Admin page<br>
+                                Order page<br>
+                                Bill page<br>
                             </p>
                         </div>
                     </div>
@@ -597,7 +594,7 @@
                 <div class="item">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{% static 'CameraShop/img/home/c2.jpg' %}" alt="">
+                            <img src="{% static 'CameraShop/img/team/hoang.jpg' %}" alt="">
                         </div>
                         <div class="detail-box">
                             <div class="client_info">
@@ -606,22 +603,16 @@
                                         Bui Viet Huy Hoang
                                     </h5>
                                     <h6>
-                                        Customer
+                                        Development
                                     </h6>
                                 </div>
                                 <i class="fa fa-quote-left" aria-hidden="true"></i>
                             </div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore
-                                et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse
-                                cillum
-                                dolore eu fugia
+                                Database design<br>
+                                Login/Register page<br>
+                                Profile page<br>
+                                Input data<br>
                             </p>
                         </div>
                     </div>

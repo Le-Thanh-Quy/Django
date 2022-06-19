@@ -27,7 +27,7 @@ function onSearch() {
             isHide = true;
             hideInputSearch();
         } else {
-            window.location.href = '../' + searchContent + "/search";
+            window.location.href = '/' + searchContent + "/search";
         }
 
     }

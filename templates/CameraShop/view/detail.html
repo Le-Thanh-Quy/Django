@@ -45,7 +45,21 @@
     <link rel="stylesheet" href="{% static 'CameraShop/css/detail/responsive.css' %}">
 
 </head>
+<script>
+    window.onload = function () {
+        {% if notification %}
+            showNotification()
+        {% endif %}
+    }
 
+    function showNotification() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 3000);
+    }
+</script>
 <body>
 <button onclick="topFunction()" id="myBtn" title="Go to top"><img src="{% static 'CameraShop/img/home/arrow-up.png' %}">
 </button>
@@ -93,6 +107,14 @@
                             <a href="/login">
                         {% endif %}
                         <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+
+                        {% if 'isAuth' in request.session %}
+                            <a href="/{{ request.session.isAuth }}/order_page">
+                        {% else %}
+                            <a href="/login">
+                        {% endif %}
+                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         </a>
                         <form>
                             <input class="user_option-box-input" style="display: none" id="input-search" type="text"
@@ -280,6 +302,15 @@
                                 <option class="option-custom">{{ color }}</option>
                             {% endfor %}
                         </select>
+
+                        <h4 class="option-color">Quantity</h4>
+                        <select class="form-control select-custom">
+                            <option class="option-custom" selected>1</option>
+                            {% for number in camera.getQuantityInStockRange %}
+                                <option class="option-custom">{{ number }}</option>
+                            {% endfor %}
+                        </select>
+
                         <h3>
                             Price:
                             <span>
@@ -292,8 +323,19 @@
                             </h3>
                         {% endif %}
                         <div class="select-option-pay">
-                            <a href="#" class="buy-now">Buy now</a>
-                            <a href="#" class="add-to-cart">Add to cart</a>
+                            {% if 'isAuth' in request.session %}
+                                <a href="/{{ camera.id }}/1/1/add_cart" class="buy-now">Buy now</a>
+                            {% else %}
+                                <a href="/login" class="buy-now">Buy now</a>
+                            {% endif %}
+
+
+                            {% if 'isAuth' in request.session %}
+                                <a href="/{{ camera.id }}/1/0/add_cart" class="add-to-cart">Add to cart</a>
+                            {% else %}
+                                <a href="/login" class="add-to-cart">Add to cart</a>
+                            {% endif %}
+
                         </div>
                         <h5><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Warranty:</strong> 24 months at
                             <strong>QTH</strong> Vietnam
@@ -432,7 +474,17 @@
                         </h4>
                         <h4 class="option-color">Color</h4>
                         <select class="form-control select-custom">
-                            <option class="option-custom">{{ len.color }}</option>
+                            {% for color in len.colors.all %}
+                                <option class="option-custom">{{ color }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <h4 class="option-color">Quantity</h4>
+                        <select class="form-control select-custom">
+                            <option class="option-custom" selected>1</option>
+                            {% for number in len.getQuantityInStockRange %}
+                                <option class="option-custom">{{ number }}</option>
+                            {% endfor %}
                         </select>
                         <h3>
                             Price:
@@ -447,8 +499,16 @@
                             </h3>
                         {% endif %}
                         <div class="select-option-pay">
-                            <a href="#" class="buy-now">Buy now</a>
-                            <a href="#" class="add-to-cart">Add to cart</a>
+                            {% if 'isAuth' in request.session %}
+                                <a href="/{{ len.id }}/0/1/add_cart" class="buy-now">Buy now</a>
+                            {% else %}
+                                <a href="/login" class="buy-now">Buy now</a>
+                            {% endif %}
+                            {% if 'isAuth' in request.session %}
+                                <a href="/{{ len.id }}/0/0/add_cart" class="add-to-cart">Add to cart</a>
+                            {% else %}
+                                <a href="/login" class="add-to-cart">Add to cart</a>
+                            {% endif %}
                         </div>
                         <h5><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Warranty:</strong> 24 months at
                             <strong>QTH</strong> Vietnam
@@ -797,7 +857,7 @@
     <div class="container">
         <div class="heading_container heading_center">
             <h2>
-                Development Team
+                Team
             </h2>
         </div>
         <div class="carousel-wrap ">
@@ -805,7 +865,7 @@
                 <div class="item">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{% static 'CameraShop/img/home/c1.jpg' %}" alt="">
+                            <img src="{% static 'CameraShop/img/team/quy.jpg' %}" alt="">
                         </div>
                         <div class="detail-box">
                             <div class="client_info">
@@ -814,23 +874,16 @@
                                         Le Thanh Quy
                                     </h5>
                                     <h6>
-                                        Customer
+                                        Development
                                     </h6>
                                 </div>
                                 <i class="fa fa-quote-left" aria-hidden="true"></i>
                             </div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore
-                                et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris
-                                nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse
-                                cillum
-                                dolore eu fugia
+                                Database design<br>
+                                Home page<br>
+                                Search camera<br>
+                                Detail product<br>
                             </p>
                         </div>
                     </div>
@@ -838,7 +891,7 @@
                 <div class="item">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{% static 'CameraShop/img/home/c1.jpg' %}" alt="">
+                            <img src="{% static 'CameraShop/img/team/trinh.jpg' %}" alt="">
                         </div>
                         <div class="detail-box">
                             <div class="client_info">
@@ -847,23 +900,16 @@
                                         Tran Nguyen Anh Trinh
                                     </h5>
                                     <h6>
-                                        Customer
+                                        Development
                                     </h6>
                                 </div>
                                 <i class="fa fa-quote-left" aria-hidden="true"></i>
                             </div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore
-                                et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris
-                                nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse
-                                cillum
-                                dolore eu fugia
+                                Database design<br>
+                                Admin page<br>
+                                Order page<br>
+                                Bill page<br>
                             </p>
                         </div>
                     </div>
@@ -871,7 +917,7 @@
                 <div class="item">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{% static 'CameraShop/img/home/c2.jpg' %}" alt="">
+                            <img src="{% static 'CameraShop/img/team/hoang.jpg' %}" alt="">
                         </div>
                         <div class="detail-box">
                             <div class="client_info">
@@ -880,23 +926,16 @@
                                         Bui Viet Huy Hoang
                                     </h5>
                                     <h6>
-                                        Customer
+                                        Development
                                     </h6>
                                 </div>
                                 <i class="fa fa-quote-left" aria-hidden="true"></i>
                             </div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore
-                                et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris
-                                nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse
-                                cillum
-                                dolore eu fugia
+                                Database design<br>
+                                Login/Register page<br>
+                                Profile page<br>
+                                Input data<br>
                             </p>
                         </div>
                     </div>
@@ -992,6 +1031,8 @@
 </footer>
 <!-- footer section -->
 
+<div id="snackbar">{{ notification }}</div>
+
 <!-- jQery -->
 <script src="{% static 'CameraShop/js/home/jquery-3.4.1.min.js' %}"></script>
 <script src="{% static 'CameraShop/js/home/script.js' %}"></script>
@@ -1019,6 +1060,7 @@
 <script src="{% static 'CameraShop/js/detail/wow.min.js' %}"></script>
 <!--custom js-->
 <script src="{% static 'CameraShop/js/detail/custom.js' %}"></script>
+
 
 </body>
 

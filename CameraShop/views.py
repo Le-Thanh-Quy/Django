@@ -1,6 +1,6 @@
 import random
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime, date
 import re
 from .models import *
@@ -53,7 +53,7 @@ def search(request, content):
     return render(request, 'CameraShop/view/index.html', context)
 
 
-def detail_camera(request, id_camera):
+def detail_camera(request, id_camera, notification=""):
     product = Camera.objects.get(id=id_camera)
 
     list_camera_all = Camera.objects.all().order_by("-id")
@@ -71,11 +71,12 @@ def detail_camera(request, id_camera):
         'list_camera': list_camera,
         'list_len': list_len,
         'request': request,
+        'notification': notification
     }
     return render(request, 'CameraShop/view/detail.html', context)
 
 
-def detail_len(request, id_len):
+def detail_len(request, id_len, notification=""):
     product = Lens.objects.get(id=id_len)
 
     list_camera = Camera.objects.all().order_by("-id")
@@ -93,6 +94,7 @@ def detail_len(request, id_len):
         'list_camera': list_camera,
         'list_len': list_len,
         'request': request,
+        'notification': notification
     }
     return render(request, 'CameraShop/view/detail.html', context)
 
@@ -166,6 +168,7 @@ def profile(request, user_name):
     is_notification = False
     is_modal = False
     notification = ""
+
     if request.method == "POST":
         if request.POST.get("update-profile"):
             password = request.POST.get("password")
@@ -176,7 +179,7 @@ def profile(request, user_name):
             gender = request.POST.get("gender")
             if not str(password).strip() or not str(full_name).strip() or not str(phone_number).strip() or not str(
                     birthday).strip() or not str(
-                    address).strip() or not str(gender).strip():
+                address).strip() or not str(gender).strip():
                 is_notification = True
                 notification = "Please enter all fields"
             elif not validNumber(str(phone_number)):
@@ -221,7 +224,8 @@ def profile(request, user_name):
                 notification = "Update successful"
                 is_modal = False
 
-    user = User.objects.filter(account=user_name)[0]
+    user = User.objects.get(account=user_name)
+    list_bill = Bill.objects.filter(user=user).order_by("-id")
     user.password = "*" * len(user.password)
     date_of_birth = user.dateOfBirth
     year = str(date_of_birth.year)
@@ -238,7 +242,8 @@ def profile(request, user_name):
         'request': request,
         'isWrong': is_notification,
         'notification': notification,
-        'is_modal': is_modal
+        'is_modal': is_modal,
+        'list_bill': list_bill
     }
     return render(request, 'CameraShop/view/profile.html', context)
 
@@ -251,3 +256,174 @@ def logout(request):
     except KeyError:
         pass
     return render(request, 'CameraShop/view/login.html', context)
+
+
+def add_cart(request, id_product, is_camera, is_buy):
+    user = User.objects.get(account=request.session.get("isAuth"))
+    if is_camera:
+        camera = Camera.objects.get(id=id_product)
+        if camera.quantityInStock == 0:
+            return detail_camera(request, id_product, "The product is currently out of stock!")
+        try:
+            order = Order.objects.get(user=user)
+            order.cameras.add(camera)
+            order.save()
+        except Order.DoesNotExist:
+            order = Order.objects.create(
+                user=user
+            )
+            order.cameras.add(camera)
+            order.save()
+            pass
+        if is_buy:
+            return order_page(request, user_name=user.account)
+        return detail_camera(request, id_product, "Add to cart successfully!")
+    else:
+        len = Lens.objects.get(id=id_product)
+        if len.quantityInStock == 0:
+            return detail_len(request, id_product, "The product is currently out of stock!")
+        try:
+            order = Order.objects.get(user=user)
+            order.lens.add(len)
+            order.save()
+        except Order.DoesNotExist:
+            order = Order.objects.create(
+                user=user
+            )
+            order.lens.add(len)
+            order.save()
+            pass
+        if is_buy:
+            return order_page(request, user_name=user.account)
+        return detail_len(request, id_product, "Add to cart successfully!")
+
+
+def order_page(request, user_name, notification=""):
+    list_camera = []
+    list_len = []
+    list_index = []
+    try:
+        list_camera = Order.objects.get(user__account=user_name).cameras.all()
+        list_len = Order.objects.get(user__account=user_name).lens.all()
+        list_index = list(range(len(list_camera) + len(list_len)))
+
+        list_all = zip(list_index, list(list_camera) + list(list_len))
+    except:
+        user = User.objects.get(account=user_name)
+        order = Order.objects.create(
+            user=user
+        )
+        pass
+
+    list_all = zip(list_index, list(list_camera) + list(list_len))
+
+    # for index, item in li :
+
+    json = '{"input_19_1001": {"price": "10", "quantityField": "input_19_quantity_1001_0", "custom_1": "input_19_custom_1001_1"}}'
+    return render(
+        request, 'CameraShop/view/order_page.html',
+        {
+            "list_all": list_all,
+            "json": json,
+            'notification': notification,
+            "len_list": len(list(list_index)),
+        }
+    )
+
+
+def bill_page(request, bill_id):
+    bill = Bill.objects.get(id=bill_id)
+    list_camera = bill.cameras.all()
+    list_len = bill.lens.all()
+    # for index, item in li :
+
+    json = '{"input_19_1001": {"price": "10", "quantityField": "input_19_quantity_1001_0", "custom_1": "input_19_custom_1001_1"}}'
+    return render(
+        request, 'CameraShop/view/bill_page.html',
+        {
+            "list_camera": list_camera,
+            "list_len": list_len,
+            "bill": bill,
+            "json": json
+        }
+    )
+
+
+def cast_payment(request):
+    context = {}
+    notification = ""
+    user_name = request.session.get("isAuth")
+    if request.method == "POST":
+        if request.POST.get("input_13"):
+            payment_method_select = request.POST.get("paypal-payment-method")
+            products = request.POST.getlist("products")
+            street = request.POST.getlist("q4_billingAddress[addr_line1]")
+            city = request.POST.getlist("q4_billingAddress[city]")
+            state = request.POST.getlist("q4_billingAddress[state]")
+            country = request.POST.getlist("q4_billingAddress[country]")
+            instructions = request.POST.getlist("q14_specialInstructions")
+            if not products:
+                notification = "Please select the product you want to buy"
+            elif str(payment_method_select).strip() == "None":
+                notification = "Please choose a payment method"
+            elif not str(street[0]).strip() or not str(city[0]).strip() or not str(state[0]).strip() or not str(
+                    country[0]).strip() or not str(instructions[0]).strip():
+                notification = "Please specify a pickup location"
+            else:
+                user = User.objects.get(account=user_name)
+                order = Order.objects.get(
+                    user=user
+                )
+                bill = Bill.objects.create(
+                    user=user,
+                    paymentMethods=str(payment_method_select).strip(),
+                    releaseTime=date.today().strftime("%d %b,%Y"),
+                    address=str(
+                        str(street[0]).strip() + " " + str(city[0]).strip() + ", " + str(state[0]).strip() + ", " + str(
+                            country[0]).strip()),
+                    instructions=str(instructions[0]).strip()
+                )
+                total_money = 0
+                total_money_no_discount = 0
+                for item in list(products):
+                    item = str(item).split(" and ")
+                    try:
+                        id_product = item[0]
+                        quantity = item[1]
+                        color = item[2]
+                        is_camera = item[3]
+                        if int(is_camera) == 1:
+                            camera = Camera.objects.get(id=id_product)
+                            camera.quantityInStock = camera.quantityInStock - int(quantity)
+                            camera.save()
+                            total_money = total_money + camera.getPriceDiscountFloat() * float(quantity)
+                            total_money_no_discount = total_money_no_discount + camera.getPriceFloat() * float(quantity)
+                            product = CameraBill.objects.create(
+                                camera=camera,
+                                quantity=quantity,
+                                color=Color.objects.get(name=color)
+                            )
+                            bill.cameras.add(product)
+                            order.cameras.remove(camera)
+                        else:
+                            lens = Lens.objects.get(id=id_product)
+                            lens.quantityInStock = lens.quantityInStock - int(quantity)
+                            lens.save()
+                            total_money = total_money + lens.getPriceDiscountFloat() * float(quantity)
+                            total_money_no_discount = total_money_no_discount + lens.getPriceFloat() * float(quantity)
+                            product = LenBill.objects.create(
+                                lens=lens,
+                                quantity=quantity,
+                                color=Color.objects.get(name=color)
+                            )
+                            bill.lens.add(product)
+                            order.lens.remove(lens)
+                    except IndexError:
+                        notification = "Refresh the page"
+                        return order_page(request, user_name, notification)
+                        pass
+                bill.totalMoney = total_money
+                bill.totalMoneyNoDiscount = total_money_no_discount
+                bill.save()
+                return redirect('/' + str(bill.id) + '/bill_page')
+    return order_page(request, user_name, notification)
