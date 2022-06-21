@@ -1,0 +1,273 @@
+body {
+    background: #f3f3f3;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #3b4a6b;
+}
+
+.profile-button {
+    background: #495c85;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #293654
+}
+
+.profile-button:focus {
+    background: #212e49;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #212e49;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #212e49;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 16px
+}
+
+.add-experience:hover {
+    background: #272B78FF;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #272B78FF;
+}
+
+.go-home {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.go-home a {
+    pointer-events: all;
+    z-index: 2;
+}
+
+.experience {
+    padding-bottom: 30px;
+    padding-top: 20px;
+}
+
+.experience a {
+    color: #130456;
+    font-weight: 500;
+}
+
+/*# sourceMappingURL=style.css.map */
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: rgba(53, 77, 138, 0.91);
+    color: #fff;
+    text-align: center;
+    border-radius: 7px;
+    padding: 16px;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    z-index: 2;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.71); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border-radius: 7px;
+    border: 1px solid #888;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    position: absolute;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 10px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-body form input {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+
+.modalHistory {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.71); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modalHistory .modal-content::-webkit-scrollbar {
+    display: none;
+}
+
+.modalHistory .modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border-radius: 7px;
+    border: 1px solid #888;
+    width: 65%;
+    height: 90%;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    overflow-y: scroll;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.modalHistory .modal-content .modal-header {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    width: auto;
+    z-index: 1000;
+}

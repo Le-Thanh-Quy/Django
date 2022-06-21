@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Site Metas -->
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="{% static 'CameraShop/img/home/camera.png' %}" type="image/x-icon">
+
+    <title>QTH</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/home/bootstrap.css' %}">
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+
+    <!-- font awesome style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/home/font-awesome.min.css' %}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/profile/style.css' %}">
+    <!-- responsive style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'CameraShop/css/home/responsive.css' %}">
+
+</head>
+<body>
+<script>
+    window.onload = function () {
+        {% if isWrong %}
+            showNotification()
+        {% endif %}
+        {% if 'isAuth' not in request.session %}
+            window.location.href = '/login'
+        {% endif %}
+    }
+    window.onpageshow = function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
+
+    function showNotification() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 3000);
+    }
+</script>
+<div class="container rounded bg-white mt-5 mb-5">
+    <p class="go-home">{{ user.account }}</p>
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5"
+                     width="150px"
+                        {% if user.gender == "Male" %}
+                     src="{% static 'CameraShop/img/profile/man-profile.jpg' %}"
+                        {% else %}
+                     src="{% static 'CameraShop/img/profile/girl-profile.jpg' %}"
+                        {% endif %}
+                >
+                <span
+                        class="font-weight-bold">{{ user.name }}</span><span
+                    class="text-black-50">{{ user.address }}</span><span> </span>
+            </div>
+            <div class="mt-5 text-center">
+                <button onclick="window.location.href = '/logout'" class="btn btn-primary profile-button" type="button">
+                    Logout
+                </button>
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <form action="/{{ user.account }}/profile" method="post">
+                    {% csrf_token %}
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="labels">Name</label>
+                            <input type="text"
+                                   id="name"
+                                   name="name"
+                                   class="form-control"
+                                   placeholder="full name" value="{{ user.name }}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Phone number</label>
+                            <input type="tel"
+                                   id="phone"
+                                   name="phone"
+                                   class="form-control"
+                                   placeholder="phone number"
+                                   value="{{ user.phoneNumber }}">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="labels">Address</label>
+                            <input type="text"
+                                   id="address"
+                                   name="address"
+                                   class="form-control"
+                                   placeholder="address"
+                                   value="{{ user.address }}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">Gender</label>
+                            <select id="gender"
+                                    name="gender"
+                                    class="form-control">
+                                <option value="male"
+                                        {% if user.gender == "Male" %}
+                                        selected
+                                        {% endif %}
+                                >Male
+                                </option>
+                                <option value="female"
+                                        {% if user.gender == "Female" %}
+                                        selected
+                                        {% endif %}
+                                >Female
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6"><label class="labels">Date of birth</label>
+                            <input type="date"
+                                   id="birthday"
+                                   name="birthday"
+                                   class="form-control"
+                                   placeholder="date of birth"
+                                   value="{{ dateOfBirth }}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">User Name</label>
+                            <input type="text" class="form-control"
+                                   id="user-name"
+                                   name="user-name"
+                                   placeholder="user name" value="{{ user.account }}" disabled>
+                        </div>
+                        <div class="col-md-6"><label class="labels">Password</label>
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control" value="{{ user.password }}"
+                                   onfocus="openResetPassword()"
+                                   placeholder="password">
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <input class="btn btn-primary profile-button"
+                               id="update-profile"
+                               name="update-profile"
+                               value="Save Profile"
+                               type="submit">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span style="font-weight: 700">QTH</span><a href="/"><span class="border px-3 p-1 add-experience"><i
+                        class="fa fa-camera"></i>&nbsp; Continue shopping</span></a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span>Purchase history</span><a onclick="openHistory()"><span
+                        class="border px-3 p-1 add-experience"><i
+                        class="fa fa-money"></i></span></a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span>Shopping cart</span><a href="/{{ user.account }}/order_page"><span
+                        class="border px-3 p-1 add-experience"><i
+                        class="fa fa-shopping-cart"></i></span></a>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="snackbar">{{ notification }}</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal"
+        {% if is_modal %}
+     style="display: block"
+        {% endif %}
+>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Reset Password</h4>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form action="/{{ user.account }}/profile" method="post">
+                {% csrf_token %}
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label class="labels">Current password</label>
+                        <input type="password"
+                               id="current-password"
+                               name="current-password"
+                               class="form-control" value=""
+                               placeholder="{{ user.password }}">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">New password</label>
+                        <input type="password"
+                               id="new-password"
+                               name="new-password"
+                               class="form-control" value=""
+                               placeholder="Your current password *">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">Confirm password</label>
+                        <input type="password"
+                               id="confirm-password"
+                               name="confirm-password"
+                               class="form-control" value=""
+                               placeholder="Confirm password *">
+                    </div>
+                </div>
+                <div class="mt-5 text-center" style="margin-bottom: 10px">
+                    <input class="btn btn-primary profile-button"
+                           id="update-profile"
+                           name="reset-password"
+                           value="Reset password"
+                           type="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModalHistory" class="modalHistory"
+>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Purchase history</h4>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-11 mx-auto">
+                        <!-- List group-->
+                        <ul class="list-group ">
+                            {% for item in list_bill %}
+                                <a href="/{{ item.id }}/bill_page" style="text-decoration: none">
+                                    <li class="list-group-item" style="margin-bottom: 15px!important;">
+                                        <!-- Custom content-->
+                                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                                            <div class="media-body order-2 order-lg-1">
+                                                <h5 class="mt-0 font-weight-bold mb-2">
+                                                    {% if item.cameras.all.0.camera %}
+                                                        {{ item.cameras.all.0.camera }} ...
+                                                    {% else %}
+                                                        {{ item.lens.all.0.lens }} ...
+                                                    {% endif %}
+
+                                                </h5>
+                                                <p class="font-italic text-muted mb-0 small">{{ item.address }}</p>
+                                                <p class="font-italic text-muted mb-0 small">{{ item.releaseTime }}</p>
+                                                <h6 class="mt-0 font-weight-bold mb-2">{{ item.paymentMethods }}</h6>
+                                                <div class="d-flex align-items-center justify-content-lg-evenly mt-1">
+                                                    <h6 class="font-weight-bold my-2"
+                                                        style="margin-right: 20px">{{ item.getTotalMoney }}đ</h6>
+
+                                                    <h6 class="font-weight-bold my-2"
+                                                        style="text-decoration: line-through; color: #5f3f3f">{{ item.getTotalMoneyNoDiscount }}đ</h6>
+                                                </div>
+                                            </div>
+                                            <img
+                                                 onmouseover=" this.src=
+                                                         {% if item.cameras.all.0.camera %}
+                                                             '{{ item.cameras.all.0.camera.image.productBackImage.url }}'
+                                                         {% else %}
+                                                             '{{ item.lens.all.0.lens.image.productBackImage.url }}'
+                                                         {% endif %} ;"
+                                                 onmouseout=" this.src=
+                                                         {% if item.cameras.all.0.camera %}
+                                                             '{{ item.cameras.all.0.camera.image.productFrontImage.url }}'
+                                                         {% else %}
+                                                             '{{ item.lens.all.0.lens.image.productFrontImage.url }}'
+                                                         {% endif %} ;"
+                                                 src="
+                                            {% if item.cameras.all.0.camera %}
+                                                {{ item.cameras.all.0.camera.image.productFrontImage.url }}
+                                            {% else %}
+                                                {{ item.lens.all.0.lens.image.productFrontImage.url }}
+                                            {% endif %}
+
+                                            " alt="Generic placeholder image"
+                                                 width="200"
+                                                 class="ml-lg-5 order-1 order-lg-2">
+                                        </div> <!-- End -->
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'CameraShop/js/profile/main.js' %}"></script>
+</body>
+</html>
