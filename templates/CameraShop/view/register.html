@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{% static 'CameraShop/img/home/camera.png' %}" type="image/x-icon">
+    <title>Register QTH</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'CameraShop/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'CameraShop/css/login/style.css' %}">
+</head>
+<body class="scroll-hide">
+<script>
+    window.onload = function () {
+        {% if isWrong %}
+            showNotification()
+        {% endif %}
+    }
+
+</script>
+
+<div class="main">
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up</h2>
+                    <form method="POST" class="register-form" id="register-form" action="/register/">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="name" id="name" placeholder="User name"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" name="pass" id="pass" placeholder="Password"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="full_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="full_name" id="full_name" placeholder="Your full name"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="zmdi zmdi-phone"></i></label>
+                            <input type="tel" name="phone" id="phone" placeholder="Your phone number"/>
+                        </div>
+                        <div class="form-group birthday">
+                            <label for="birthday"><i class="zmdi zmdi-calendar"></i></label>
+                            <input type="date" name="birthday" id="birthday" placeholder="Your birthday"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="address"><i class="zmdi zmdi-home"></i></label>
+                            <input type="text" name="address" id="address" placeholder="Your address"/>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="signup-image">
+                    <figure><img src="{% static 'CameraShop/img/login/signup-image.jpg' %}" alt="sing up image">
+                    </figure>
+                    <a href="/login" class="signup-image-link">I am already member</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<div id="snackbar">{{ notification }}</div>
+<!-- JS -->
+<script src="{% static 'CameraShop/js/login/jquery.min.js' %}"></script>
+<script src="{% static 'CameraShop/js/login/main.js' %}"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
