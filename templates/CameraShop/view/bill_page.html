@@ -27,6 +27,9 @@
                             QTH
                         </a> > <span style="color: #858585;">Bill</span>
                     </h2>
+                    {% if bill.isCancel %}
+                            <p style="color: red">Waiting for order cancellation confirmation</p>
+                        {% endif %}
                 </div>
                 <div class="invoice p-5">
                     <h5>Your order Confirmed!</h5>

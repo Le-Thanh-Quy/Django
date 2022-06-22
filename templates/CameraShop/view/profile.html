@@ -261,9 +261,10 @@
                         <!-- List group-->
                         <ul class="list-group ">
                             {% for item in list_bill %}
-                                <a href="/{{ item.id }}/bill_page" style="text-decoration: none">
-                                    <li class="list-group-item" style="margin-bottom: 15px!important;">
-                                        <!-- Custom content-->
+
+                                <li class="list-group-item" style="margin-bottom: 15px!important;">
+                                    <!-- Custom content-->
+                                    <a href="/{{ item.id }}/bill_page" style="text-decoration: none">
                                         <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                             <div class="media-body order-2 order-lg-1">
                                                 <h5 class="mt-0 font-weight-bold mb-2">
@@ -286,19 +287,19 @@
                                                 </div>
                                             </div>
                                             <img
-                                                 onmouseover=" this.src=
-                                                         {% if item.cameras.all.0.camera %}
-                                                             '{{ item.cameras.all.0.camera.image.productBackImage.url }}'
-                                                         {% else %}
-                                                             '{{ item.lens.all.0.lens.image.productBackImage.url }}'
-                                                         {% endif %} ;"
-                                                 onmouseout=" this.src=
-                                                         {% if item.cameras.all.0.camera %}
-                                                             '{{ item.cameras.all.0.camera.image.productFrontImage.url }}'
-                                                         {% else %}
-                                                             '{{ item.lens.all.0.lens.image.productFrontImage.url }}'
-                                                         {% endif %} ;"
-                                                 src="
+                                                    onmouseover=" this.src=
+                                                            {% if item.cameras.all.0.camera %}
+                                                                '{{ item.cameras.all.0.camera.image.productBackImage.url }}'
+                                                            {% else %}
+                                                                '{{ item.lens.all.0.lens.image.productBackImage.url }}'
+                                                            {% endif %} ;"
+                                                    onmouseout=" this.src=
+                                                            {% if item.cameras.all.0.camera %}
+                                                                '{{ item.cameras.all.0.camera.image.productFrontImage.url }}'
+                                                            {% else %}
+                                                                '{{ item.lens.all.0.lens.image.productFrontImage.url }}'
+                                                            {% endif %} ;"
+                                                    src="
                                             {% if item.cameras.all.0.camera %}
                                                 {{ item.cameras.all.0.camera.image.productFrontImage.url }}
                                             {% else %}
@@ -306,11 +307,19 @@
                                             {% endif %}
 
                                             " alt="Generic placeholder image"
-                                                 width="200"
-                                                 class="ml-lg-5 order-1 order-lg-2">
+                                                    width="200"
+                                                    class="ml-lg-5 order-1 order-lg-2">
                                         </div> <!-- End -->
-                                    </li>
-                                </a>
+                                    </a>
+
+                                    {% if item.isCancel %}
+                                        <h4 style="color: red">Waiting for order cancellation confirmation</h4>
+                                    {% else %}
+                                        <a href="/{{ item.id }}/bill_cancel"><h4>Cancel</h4></a>
+                                    {% endif %}
+
+                                </li>
+
                             {% endfor %}
                         </ul>
                     </div>

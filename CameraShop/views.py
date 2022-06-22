@@ -331,6 +331,26 @@ def order_page(request, user_name, notification=""):
     )
 
 
+def bill_cancel(request, bill_id):
+    bill = Bill.objects.get(id=bill_id)
+    bill.isCancel = True
+    bill.save()
+    list_camera = bill.cameras.all()
+    list_len = bill.lens.all()
+    # for index, item in li :
+
+    json = '{"input_19_1001": {"price": "10", "quantityField": "input_19_quantity_1001_0", "custom_1": "input_19_custom_1001_1"}}'
+    return render(
+        request, 'CameraShop/view/bill_page.html',
+        {
+            "list_camera": list_camera,
+            "list_len": list_len,
+            "bill": bill,
+            "json": json
+        }
+    )
+
+
 def bill_page(request, bill_id):
     bill = Bill.objects.get(id=bill_id)
     list_camera = bill.cameras.all()

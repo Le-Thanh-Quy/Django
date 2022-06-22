@@ -15,4 +15,5 @@ urlpatterns = [
     path('<str:user_name>/order_page', views.order_page, name='order_page'),
     path('cast_payment/', views.cast_payment, name='cast_payment'),
     path('<int:bill_id>/bill_page', views.bill_page, name='bill_page'),
+    path('<int:bill_id>/bill_cancel', views.bill_cancel, name='bill_cancel'),
 ]
