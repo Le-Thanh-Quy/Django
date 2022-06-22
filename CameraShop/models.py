@@ -299,6 +299,8 @@ class Bill(models.Model):
     releaseTime = models.CharField(max_length=200)
     totalMoney = models.FloatField(null=True)
     totalMoneyNoDiscount = models.FloatField(null=True)
+    isAccept = models.BooleanField(default=False)
+    isCancel = models.BooleanField(default=False)
 
     def __str__(self):
         name = self.user.name + " " + str(self.releaseTime)

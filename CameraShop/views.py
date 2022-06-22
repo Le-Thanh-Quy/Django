@@ -394,6 +394,8 @@ def cast_payment(request):
                         is_camera = item[3]
                         if int(is_camera) == 1:
                             camera = Camera.objects.get(id=id_product)
+                            if camera.quantityInStock == 0 or camera.quantityInStock - int(quantity) < 0:
+                                continue
                             camera.quantityInStock = camera.quantityInStock - int(quantity)
                             camera.save()
                             total_money = total_money + camera.getPriceDiscountFloat() * float(quantity)
@@ -407,6 +409,8 @@ def cast_payment(request):
                             order.cameras.remove(camera)
                         else:
                             lens = Lens.objects.get(id=id_product)
+                            if lens.quantityInStock == 0 or lens.quantityInStock - int(quantity) < 0:
+                                continue
                             lens.quantityInStock = lens.quantityInStock - int(quantity)
                             lens.save()
                             total_money = total_money + lens.getPriceDiscountFloat() * float(quantity)
